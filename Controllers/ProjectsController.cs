@@ -7,16 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BugTracker.Data;
 using BugTracker.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BugTracker.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class ProjectsController : Controller
     {
         private readonly RaidContext _context;
+        private readonly RoleManager<AppRole> roleManager;
 
-        public ProjectsController(RaidContext context)
+        public ProjectsController(RaidContext context, RoleManager<AppRole> roleManager)
         {
             _context = context;
+            this.roleManager = roleManager;
         }
 
         // GET: Projects
@@ -60,9 +65,25 @@ namespace BugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Add the project to the database context
                 _context.Add(project);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                // Create the role corresponding to the project
+                AppRole appRole = new AppRole
+                {
+                    Name = project.Name
+                };
+
+                IdentityResult result = await roleManager.CreateAsync(appRole);
+                bool roleCreateSuccess = result.Succeeded;
+
+                // Return to index view or return error if role couldn't be created
+                if (roleCreateSuccess)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+               
             }
             return View(project);
         }

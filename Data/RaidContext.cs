@@ -1,29 +1,28 @@
 ﻿using System;
 using BugTracker.Models;
-using BugTracker.Areas.Identity.Data;
+using BugTracker.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace BugTracker.Data
 {
-    public class RaidContext : DbContext
+    public class RaidContext : IdentityDbContext<AppUser, AppRole, int>
     {
         public RaidContext(DbContextOptions<RaidContext> options) : base(options)
         {
         }
 
         public DbSet<BugPage> BugPages { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<UserBugPage> UserBugPages { get; set; }
+        public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<Project> Projects { get; set; }
-        public DbSet<ProjectUser> ProjectUsers { get; set; }
+        public DbSet<AppRole> AppRoles { get; set; }
 
+        // Seeding data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserBugPage>()
-                .HasKey(ubp => new { ubp.UserID, ubp.BugPageID });
-
-            modelBuilder.Entity<ProjectUser>()
-                .HasKey(pu => new { pu.ProjectID, pu.UserID });
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Seed();
         }
     }
 }

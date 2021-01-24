@@ -18,6 +18,11 @@ namespace BugTracker.Controllers
             _logger = logger;
         }
 
+        public IActionResult LoginPage()
+        {
+            return View();
+        }
+
         public IActionResult Index()
         {
             return View();

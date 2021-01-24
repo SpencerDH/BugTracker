@@ -21,6 +21,7 @@ namespace BugTracker.Data
                 return;
             }
 
+            /*
             // Initialize bug pages
             var bugPages = new BugPage[]
             {
@@ -38,22 +39,23 @@ namespace BugTracker.Data
             context.SaveChanges();
 
             // Initialize users
-            var users = new User[]
+            var users = new AppUser[]
             {
-                new User{ID = 1, FirstName = "Spencer", LastName = "Hall", Role = "Administrator"},
-                new User{ID = 2, FirstName = "Mimi", LastName = "Ackleh", Role = "Staff Engineer"},
-                new User{ID = 3, FirstName = "Emily", LastName = "Dardaman", Role = "Staff Engineer"},
-                new User{ID = 4, FirstName = "Eric", LastName = "Daniel", Role = "Tech Lead"},
-                new User{ID = 5, FirstName = "Josh", LastName = "Maddox", Role = "Tech Lead"},
-                new User{ID = 6, FirstName = "Lauren", LastName = "Ackleh", Role = "Staff Engineer"}
+                new AppUser{FirstName = "Spencer", LastName = "Hall"},
+                new AppUser{FirstName = "Mimi", LastName = "Ackleh"},
+                new AppUser{FirstName = "Emily", LastName = "Dardaman"},
+                new AppUser{FirstName = "Eric", LastName = "Daniel"},
+                new AppUser{FirstName = "Josh", LastName = "Maddox"},
+                new AppUser{FirstName = "Lauren", LastName = "Ackleh"}
             };
 
-            foreach (User user in users)
+            foreach (AppUser user in users)
             {
                 context.Add(user);
             }
 
             context.SaveChanges();
+            */
 
             // Initialize projects
             var projects = new Project[]
@@ -66,34 +68,6 @@ namespace BugTracker.Data
             {
                 context.Add(project);
             }
-
-            context.SaveChanges();
-
-            // Initialize projectuser
-            var projectusers = new ProjectUser[]
-            {
-                new ProjectUser{UserID = 1, ProjectID = 1, IsCreator = true},
-                new ProjectUser{UserID = 2, ProjectID = 1, IsCreator = false}
-            };
-
-            foreach (ProjectUser projectuser in projectusers)
-            {
-                context.Add(projectuser);
-            }
-
-            context.SaveChanges();
-
-            // Initialize userbugpage
-            var userbugpages = new UserBugPage[]
-            {
-                new UserBugPage{UserID = 3, BugPageID = 4},
-                new UserBugPage{UserID = 6, BugPageID = 2}
-            };
-
-            foreach (UserBugPage userbugpage in userbugpages)
-            {
-                context.Add(userbugpage);
-            };
 
             context.SaveChanges();
         }

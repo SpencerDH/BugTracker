@@ -10,7 +10,6 @@ namespace BugTracker.Models
         public string Name { get; set; }
 
         // Navigation properties
-        public ICollection<ProjectUser> ProjectUsers { get; set; }
         public ICollection<BugPage> BugPages { get; set; }
     }
 }

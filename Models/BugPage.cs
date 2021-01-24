@@ -25,9 +25,8 @@ namespace BugTracker.Models
         public int Priority { get; set; }
 
         // Navigation properties
-        public ICollection<UserBugPage> UserBugPages { get; set; }
-
         public Project Project { get; set; }
         public int ProjectID { get; set; }
+
     }
 }
