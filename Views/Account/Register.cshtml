@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Register";
+}
+
+@{ 
+    Layout = "_AuthLayout.cshtml";
+}
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post))
+{
+    <table>
+        <tr>
+            <td>Enter First Name:</td>
+            <td>@Html.TextBox("FirstName")</td>
+        </tr>
+        <tr>
+            <td>Enter Last Name:</td>
+            <td>@Html.TextBox("LastName")</td>
+        </tr>
+        <tr>
+            <td>Enter Username:</td>
+            <td>@Html.TextBox("Username")</td>
+        </tr>
+        <tr>
+            <td>Enter Password:</td>
+            <td>@Html.TextBox("Password")</td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" value="Submit" /></td>
+        </tr>
+    </table>
+}
