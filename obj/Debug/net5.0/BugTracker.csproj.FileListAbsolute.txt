@@ -200,3 +200,4 @@ C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\AppRoles\Delete.cs
 C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\AppRoles\Details.cshtml.g.cs
 C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\AppRoles\Edit.cshtml.g.cs
 C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\AppRoles\Index.cshtml.g.cs
+C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\Shared\_AuthLayoutBackground.cshtml.g.cs
