@@ -10,22 +10,22 @@ using BugTracker.Models;
 
 namespace BugTracker.Controllers
 {
-    public class BugPagesController : Controller
+    public class ProjectTasksController : Controller
     {
         private readonly RaidContext _context;
 
-        public BugPagesController(RaidContext context)
+        public ProjectTasksController(RaidContext context)
         {
             _context = context;
         }
 
-        // GET: BugPages
+        // GET: ProjectTasks
         public async Task<IActionResult> Index()
         {
-            return View(await _context.BugPages.ToListAsync());
+            return View(await _context.ProjectTasks.ToListAsync());
         }
 
-        // GET: BugPages/Details/5
+        // GET: ProjectTasks/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,52 +33,40 @@ namespace BugTracker.Controllers
                 return NotFound();
             }
 
-            var bugPage = await _context.BugPages
+            var projectTask = await _context.ProjectTasks
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (bugPage == null)
+            if (projectTask == null)
             {
                 return NotFound();
             }
 
-            return View(bugPage);
+            return View(projectTask);
         }
 
-        // GET: BugPages/Create
-        /*
-        public async Task<IActionResult> Create(int projectid)
+        // GET: ProjectTasks/Create
+        public IActionResult Create(int projectid)
         {
-            var projectName = await _context.Projects
-                .FirstOrDefaultAsync(p => p.ID == projectid);
-
-            ViewData["ProjectNameForBugPage"] = projectName;
-            return View();
-        }
-        */
-        public IActionResult Create(int projecttaskid)
-        {
-            ViewBag.projectid = projecttaskid;
+            ViewBag.projectid = projectid;
             return View();
         }
 
-        // POST: BugPages/Create
+        // POST: ProjectTasks/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Description,Status,Priority,ProjectTaskID")] BugPage bugPage, int projecttaskid)
+        public async Task<IActionResult> Create([Bind("ID,Name,ProjectID")] ProjectTask projectTask, int projectid)
         {
-            // bugPage.ProjectID = projectid;
-
             if (ModelState.IsValid)
             {
-                _context.Add(bugPage);
+                _context.Add(projectTask);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(bugPage);
+            return View(projectTask);
         }
 
-        // GET: BugPages/Edit/5
+        // GET: ProjectTasks/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -86,22 +74,22 @@ namespace BugTracker.Controllers
                 return NotFound();
             }
 
-            var bugPage = await _context.BugPages.FindAsync(id);
-            if (bugPage == null)
+            var projectTask = await _context.ProjectTasks.FindAsync(id);
+            if (projectTask == null)
             {
                 return NotFound();
             }
-            return View(bugPage);
+            return View(projectTask);
         }
 
-        // POST: BugPages/Edit/5
+        // POST: ProjectTasks/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Description,Status,Priority")] BugPage bugPage)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Name")] ProjectTask projectTask)
         {
-            if (id != bugPage.ID)
+            if (id != projectTask.ID)
             {
                 return NotFound();
             }
@@ -110,12 +98,12 @@ namespace BugTracker.Controllers
             {
                 try
                 {
-                    _context.Update(bugPage);
+                    _context.Update(projectTask);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BugPageExists(bugPage.ID))
+                    if (!ProjectTaskExists(projectTask.ID))
                     {
                         return NotFound();
                     }
@@ -126,10 +114,10 @@ namespace BugTracker.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(bugPage);
+            return View(projectTask);
         }
 
-        // GET: BugPages/Delete/5
+        // GET: ProjectTasks/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -137,30 +125,30 @@ namespace BugTracker.Controllers
                 return NotFound();
             }
 
-            var bugPage = await _context.BugPages
+            var projectTask = await _context.ProjectTasks
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (bugPage == null)
+            if (projectTask == null)
             {
                 return NotFound();
             }
 
-            return View(bugPage);
+            return View(projectTask);
         }
 
-        // POST: BugPages/Delete/5
+        // POST: ProjectTasks/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var bugPage = await _context.BugPages.FindAsync(id);
-            _context.BugPages.Remove(bugPage);
+            var projectTask = await _context.ProjectTasks.FindAsync(id);
+            _context.ProjectTasks.Remove(projectTask);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BugPageExists(int id)
+        private bool ProjectTaskExists(int id)
         {
-            return _context.BugPages.Any(e => e.ID == id);
+            return _context.ProjectTasks.Any(e => e.ID == id);
         }
     }
 }

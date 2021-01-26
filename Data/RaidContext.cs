@@ -17,6 +17,7 @@ namespace BugTracker.Data
         public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<AppRole> AppRoles { get; set; }
+        public DbSet<ProjectTask> ProjectTasks { get; set; }
 
         // Seeding data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
