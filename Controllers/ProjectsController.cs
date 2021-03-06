@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BugTracker.Data;
 using BugTracker.Models;
+using BugTracker.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 
@@ -30,7 +32,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: Projects/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, string testInput)
         {
             if (id == null)
             {
@@ -39,14 +41,38 @@ namespace BugTracker.Controllers
 
             var project = await _context.Projects
                 .Include(p => p.ProjectTasks)
+                    .ThenInclude(pt => pt.Issues)
                 .FirstOrDefaultAsync(m => m.ID == id);
+
+            var projectTasks = from pt in project.ProjectTasks
+                               select pt;
+
+            // Create TempData dictionary
+            if (TempData["ViewModelsParamsDictionary"] == null)
+            {
+                Console.WriteLine("Dictionary was null");
+                var paramsDict = new Dictionary<int, string>();
+                foreach (var pt in projectTasks)
+                {
+                    paramsDict.Add(pt.ID, "Task #" + pt.ID);
+                }
+
+                TempData["ViewModelsParamsDictionary"] = paramsDict;
+            }
+            else
+            {
+                var paramsDict = (Dictionary<int, string>)TempData["ViewModelsParamsDictionary"];
+                paramsDict[4] = testInput;
+                paramsDict[5] = testInput + " and testing this too";
+                TempData["ViewModelsParamsDictionary"] = paramsDict;
+            }
 
             if (project == null)
             {
                 return NotFound();
             }
-            return View(project);
 
+            return View(project);
         }
 
         // GET: Projects/Create

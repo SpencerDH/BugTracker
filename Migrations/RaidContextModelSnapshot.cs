@@ -19,6 +19,21 @@ namespace BugTracker.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.2");
 
+            modelBuilder.Entity("AppUserProjectTask", b =>
+                {
+                    b.Property<int>("AppUsersId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProjectTasksID")
+                        .HasColumnType("int");
+
+                    b.HasKey("AppUsersId", "ProjectTasksID");
+
+                    b.HasIndex("ProjectTasksID");
+
+                    b.ToTable("AppUserProjectTask");
+                });
+
             modelBuilder.Entity("BugTracker.Models.AppRole", b =>
                 {
                     b.Property<int>("Id")
@@ -51,13 +66,13 @@ namespace BugTracker.Migrations
                         new
                         {
                             Id = 4,
-                            ConcurrencyStamp = "578c0d7d-0621-4b4b-bd9a-2707287ae1f7",
+                            ConcurrencyStamp = "3c36bb75-c150-41db-823f-7fdd92a495fd",
                             Name = "Administrator"
                         },
                         new
                         {
                             Id = 5,
-                            ConcurrencyStamp = "d59ed6f9-7835-4b93-9ed0-caf4e10b4e51",
+                            ConcurrencyStamp = "80545179-cd20-40e6-9399-0b60b7007d46",
                             Name = "StandardUser"
                         });
                 });
@@ -139,12 +154,12 @@ namespace BugTracker.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c5241038-417c-4e87-a456-92d44a99131d",
+                            ConcurrencyStamp = "0f75184b-0f87-45d4-bb4a-cd1d1cb13ddb",
                             EmailConfirmed = false,
                             FirstName = "Josh",
                             LastName = "Maddox",
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEB4D7rzRBrv7vGFfB2hsFR3g/w0c6kbm5OXt9Rk4JpDfFWyPD4WgLPJxbPkK4Zxuag==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEl73zqqdt7ECbEapjHudZQrlsCru0Uhyi7kL9QoQ4sTZ1r/FsRXe+UvO+hYAT1zmQ==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
                             UserName = "JoshFM"
@@ -153,12 +168,12 @@ namespace BugTracker.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3f9157e9-e902-4b43-8beb-4785b272fc80",
+                            ConcurrencyStamp = "5b468e90-d1e5-475a-aea4-ba14deca7d41",
                             EmailConfirmed = false,
                             FirstName = "Lauren",
                             LastName = "Ackleh",
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEO0yFb2kJjV7XJxIo7QpPwaA254VzZ/erEUHdfNqe6W7dEmMgFR0x50rgoikIDCAxg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGtwiwZutYaoC7/fK3Jw8FLltTyC7deU8408zW2HQLtqZfUPY3Mod49JKupjxdsJ3A==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
                             UserName = "LaurenGA"
@@ -167,24 +182,27 @@ namespace BugTracker.Migrations
                         {
                             Id = 3,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4f1f1d36-03ab-4b3b-963d-fa2313abb182",
+                            ConcurrencyStamp = "4d829091-05a8-4a1f-8830-a4e5d414c839",
                             EmailConfirmed = false,
                             FirstName = "Spencer",
                             LastName = "Hall",
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEDAvR1upSJuJc5DC+xlX3KdQ7dcjj/3RGhSzfwxodbarf80Bb6az4MV8gsHeh2y71Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGvFeZ2YqFJyMPbfo/pn2dSEe+vIAAsl8KBTWJGIlQZkZeGQiN9brfw93d9l4rrZnA==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
                             UserName = "SpencerDH"
                         });
                 });
 
-            modelBuilder.Entity("BugTracker.Models.BugPage", b =>
+            modelBuilder.Entity("BugTracker.Models.Issue", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
+
+                    b.Property<string>("Date")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -193,16 +211,13 @@ namespace BugTracker.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.Property<int>("Priority")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProjectID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ProjectTaskID")
+                    b.Property<int>("ProjectTaskID")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
@@ -211,11 +226,37 @@ namespace BugTracker.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ProjectID");
-
                     b.HasIndex("ProjectTaskID");
 
-                    b.ToTable("BugPages");
+                    b.ToTable("Issues");
+                });
+
+            modelBuilder.Entity("BugTracker.Models.IssueComment", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("AppUserID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("IssueID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("AppUserID");
+
+                    b.HasIndex("IssueID");
+
+                    b.ToTable("IssueComment");
                 });
 
             modelBuilder.Entity("BugTracker.Models.Project", b =>
@@ -257,11 +298,17 @@ namespace BugTracker.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProjectID")
                         .HasColumnType("int");
+
+                    b.Property<string>("Summary")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
@@ -391,19 +438,49 @@ namespace BugTracker.Migrations
                         });
                 });
 
-            modelBuilder.Entity("BugTracker.Models.BugPage", b =>
+            modelBuilder.Entity("AppUserProjectTask", b =>
                 {
-                    b.HasOne("BugTracker.Models.Project", "Project")
+                    b.HasOne("BugTracker.Models.AppUser", null)
                         .WithMany()
-                        .HasForeignKey("ProjectID")
+                        .HasForeignKey("AppUsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BugTracker.Models.ProjectTask", null)
-                        .WithMany("BugPages")
-                        .HasForeignKey("ProjectTaskID");
+                        .WithMany()
+                        .HasForeignKey("ProjectTasksID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Navigation("Project");
+            modelBuilder.Entity("BugTracker.Models.Issue", b =>
+                {
+                    b.HasOne("BugTracker.Models.ProjectTask", "ProjectTask")
+                        .WithMany("Issues")
+                        .HasForeignKey("ProjectTaskID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProjectTask");
+                });
+
+            modelBuilder.Entity("BugTracker.Models.IssueComment", b =>
+                {
+                    b.HasOne("BugTracker.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BugTracker.Models.Issue", "Issue")
+                        .WithMany("IssueComments")
+                        .HasForeignKey("IssueID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Issue");
                 });
 
             modelBuilder.Entity("BugTracker.Models.ProjectTask", b =>
@@ -466,6 +543,11 @@ namespace BugTracker.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("BugTracker.Models.Issue", b =>
+                {
+                    b.Navigation("IssueComments");
+                });
+
             modelBuilder.Entity("BugTracker.Models.Project", b =>
                 {
                     b.Navigation("ProjectTasks");
@@ -473,7 +555,7 @@ namespace BugTracker.Migrations
 
             modelBuilder.Entity("BugTracker.Models.ProjectTask", b =>
                 {
-                    b.Navigation("BugPages");
+                    b.Navigation("Issues");
                 });
 #pragma warning restore 612, 618
         }

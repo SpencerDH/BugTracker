@@ -13,11 +13,11 @@ namespace BugTracker.Data
         {
         }
 
-        public DbSet<BugPage> BugPages { get; set; }
         public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<AppRole> AppRoles { get; set; }
         public DbSet<ProjectTask> ProjectTasks { get; set; }
+        public DbSet<Issue> Issues { get; set; }
 
         // Seeding data
         protected override void OnModelCreating(ModelBuilder modelBuilder)

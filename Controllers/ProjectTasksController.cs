@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BugTracker.Data;
 using BugTracker.Models;
+using BugTracker.ViewModels;
 
 namespace BugTracker.Controllers
 {
@@ -26,21 +27,51 @@ namespace BugTracker.Controllers
         }
 
         // GET: ProjectTasks/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(
+            int? id,
+            int? usersPageNumber,
+            int? issuesPageNumber,
+            string? issuesSearchTerm)
         {
+            // Set page size for both paginated lists
+            int pageSize = 5;
+
+            // Get out
             if (id == null)
             {
                 return NotFound();
             }
 
             var projectTask = await _context.ProjectTasks
+                .Include(p => p.Issues)
+                .Include(p => p.AppUsers)
                 .FirstOrDefaultAsync(m => m.ID == id);
+
+            var issues = from issue in projectTask.Issues
+                         select issue;
+
+            var appUsers = from appUser in projectTask.AppUsers
+                           select appUser;
+
+            if (issuesSearchTerm != null)
+            {
+                issues = issues.Where(i => i.Name.Contains(issuesSearchTerm) |
+                                    i.Description.Contains(issuesSearchTerm));
+            }
+
             if (projectTask == null)
             {
                 return NotFound();
             }
 
-            return View(projectTask);
+            IssueAndUserListsViewModel viewModel = new IssueAndUserListsViewModel()
+            {
+                projectTask = projectTask,
+                issuesList = new PaginatedList<Issue>(issues, issuesPageNumber ?? 1, pageSize),
+                usersList = new PaginatedList<AppUser>(appUsers, usersPageNumber ?? 1, pageSize)
+            };
+
+            return View(viewModel);
         }
 
         // GET: ProjectTasks/Create
@@ -61,7 +92,7 @@ namespace BugTracker.Controllers
             {
                 _context.Add(projectTask);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Projects", new { id = projectid });
             }
             return View(projectTask);
         }

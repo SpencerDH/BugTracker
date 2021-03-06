@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BugTracker", "BugTracker.csproj", "{4E0F82FF-80E9-4931-9456-58F2CD2E2FFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BugTracker", "BugTracker.csproj", "{4E0F82FF-80E9-4931-9456-58F2CD2E2FFA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitTestsBugTracker", "..\XUnitTestProject1\XUnitTestsBugTracker.csproj", "{AE336A26-3E7C-4DDF-A416-95D97F32F229}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{4E0F82FF-80E9-4931-9456-58F2CD2E2FFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E0F82FF-80E9-4931-9456-58F2CD2E2FFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E0F82FF-80E9-4931-9456-58F2CD2E2FFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE336A26-3E7C-4DDF-A416-95D97F32F229}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE336A26-3E7C-4DDF-A416-95D97F32F229}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE336A26-3E7C-4DDF-A416-95D97F32F229}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE336A26-3E7C-4DDF-A416-95D97F32F229}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

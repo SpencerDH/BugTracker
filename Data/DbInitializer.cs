@@ -16,10 +16,6 @@ namespace BugTracker.Data
             // Check to see if the database has already been
             // seeded; if it has, no need to proceed with the
             // seeding in this method.
-            if (context.BugPages.Any())
-            {
-                return;
-            }
 
             /*
             // Initialize bug pages

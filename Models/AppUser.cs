@@ -12,6 +12,7 @@ namespace BugTracker.Models
 
         // Navigation properties
         // public IList<UserRole> UserRoles { get; set; }
+        public ICollection<ProjectTask> ProjectTasks { get; set; }
 
     }
 }

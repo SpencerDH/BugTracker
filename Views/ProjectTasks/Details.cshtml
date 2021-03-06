@@ -1,37 +1,172 @@
-﻿@model BugTracker.Models.ProjectTask
+﻿@model BugTracker.ViewModels.IssueAndUserListsViewModel
 
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    .flex-container {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .custom-borders {
+        margin: 5px;
+        width: 450px;
+        border: 1px solid black;
+        table-layout: fixed;
+    }
+
+    @*
+    th, td {
+        width: 100px;
+    }
+    *@
+
+    thead {
+        background-color: #00008B;
+        color: white;
+    }
+
+    ul.page-numbers {
+        list-style-type: none;
+    }
+
+    li.page-numbers {
+        display: inline;
+    }
+
+</style>
+
+<div id="PlaceHolderHere"></div>
+
 <h1>Details</h1>
 
-<div>
-    <h4>ProjectTask</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-    </dl>
+<p>Quum Patrum studium omni fere tempore in Ecclesia Anglicana floruerit, mirum sane accidit, non nisi unum S. Augustini opusculum[1], quod sciam, idque historici tantum argumenti, typis apud nos unquam mandatum fuisse. Auspicatius ergo a nullo alio exordium sumpturam fore Bibliothecam hanc Patrum duximus, quam ab ipso Augustino, neque opera ejus selecta quam ab ipsius Confessionibus, tum quia indolem Sancti Patris, ingenium, vitam, mores optime declarent, tum vero quia iis, qui pietati gnaviter studuerunt, nunquam non (si modo licuerit) in manibus versatæ sint. Operi tam insigni, et sæculorum plus quam tredecim quæ id in succum et sanguinem pietatis suæ converterunt, suffragiis, amore, studio, comprobato, non est quod immoremur; id ergo paucis tantum exponemus, quod in hac editione præstare voluerimus.</p>
+
+<p>Cum Codd. ergo ABC, quos per benevolentiam Præfectorum et Sociorum Colleg. Mertonensis et Ænei Nasi, mihi domi habere licuit, amicorum juniorum ope adhibita, textum Confessionum a capite ad calcem contuli; codd. vero DE, quos non nisi in Bibliotheca Bodleiana conferre licuit, postquam eorum indolem satis exploraverim, iis tantum in locis, haud paucis sane, inspexi, ubi codd. jam collati inter se discreparunt. Lectt. porro Varr. minoris sæpe, vel nullius fere, momenti notavi, quo codd. nostrorum indoles melius innotesceret; verborum autem ordinem, quem Augustinus subtilem et limatum imprimis adhibet, utpote qui Rhetor olim fuerit et "acutis auribus" præditus, tacite, ne tædio foret crebra harum minutiarum adnotatio, ad eorumdem fidem immutavi. Immutavi autem, cum, etsi minutum sit, suum tamen habeat leporem. Opere vero jam ad finem perducto, merita editionis Benedictinæ adeo non elevare vellem, ut nequeam non admirari summam fidem, diligentiam, acumen, quæ in ea concinnanda, adhibuerunt Monachi Benedictini</p>
+
+<p>Notulas, quas textui subjecimus, utiles fore speravimus, quod Augustini mentem subinde plenius declararent, vel rem aliquam, quam in Confessionibus obiter tantum tetigerit, expressius tractarent, vel ex alia quadam parte ante oculos sisterent. Eas autem ex editione M. Dubois (Paris. 1776) maximam partem desumptas esse, jam diximus; quasdam ipsi adjecimus, maxime, quæ ad Manichæorum hæresin pertinent. Ubique autem fere verba ipsius Augustini adhibuimus, tum ne nostra cum ipsius sententiis miscere quibusdam videremur, tum vero quod ipse sensus suos magis vivide esset {x}aperturus, tum denique quod thesaurus quodammodo sententiarum et dictorum Sancti illius ita evasurus foret, unde ii, qui in operibus ejus minus versati essent, divitias, quas per insignem hunc servum Suum Ecclesiæ Suæ contulit Deus, rectius æstimarent. Faxit Ille, ut scripta inclyti hujus sanctique propugnatoris sanæ fidei pietatisque virilis, regnum Ejus, "cujus erat et cui serviit" nunc etiam promoveant.</p>
+
+
+<div class="flex-container">
+    <div>
+        <table class="table custom-borders">
+            <thead>
+                <tr>
+                    <th>
+                        Issue Name
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Priority
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var issue in Model.issuesList)
+                {
+                    <tr>
+                        <td>
+                            <a asp-controller="Issues" asp-action="Details" asp-route-id="@issue.ID">@issue.Name</a>
+                        </td>
+                        <td>
+                            @issue.Status
+                        </td>
+                        <td>
+                            @issue.Priority
+                        </td>
+                        <td>
+                            @issue.Date
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <table>
+            <tr style="text-align:center">
+                @foreach (var number in Model.issuesList.currentPagesBox)
+                {
+                    <td><a asp-action="Details" method="get" asp-route-issuesPageNumber="@number">@number</a></td>
+                }
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td style="text-align:center; width:450px;">
+                    @*
+        <a asp-controller="Issues" asp-action="Create" asp-route-projecttaskid="@Model.projectTask.ID">Create New Issue</a>
+                    *@
+                    <button type="button" class="btn btn-primary" data-toggle="ajax-modal" data-target="#createIssue"
+                            data-url="@Url.Action("Create", "Issues", new { projecttaskid = Model.projectTask.ID })">Create New Issue</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <table class="table custom-borders">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Spencer</td>
+                    <td>Programmer</td>
+                </tr>
+                <tr>
+                    <td>Mimi</td>
+                    <td>Physician</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
-<div>
-    <h4>Issues</h4>
-    @foreach (var item in Model.BugPages)
-    {
-        <p>
-            <a asp-controller="BugPages" asp-action="Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.Name)</a>
-        </p>
-    }
-</div>
-<div>
-    <a href="@Url.Action("Create", "BugPages", new { projecttaskid = Model.ID })">Create New Issue</a>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+
+
+@*
+
+    <div>
+        <h4>ProjectTask</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <h4>Tasks</h4>
+        <br />
+        @foreach (var item in Model.Issues)
+        {
+            <p>
+                <a asp-controller="Issues" asp-action="Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.Name)</a>
+            </p>
+        }
+    </div>
+    <div>
+        <a href="@Url.Action("Create", "Issues", new { projecttaskid = Model.ID })">Create New Issue</a>
+    </div>
+
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>*@
+
