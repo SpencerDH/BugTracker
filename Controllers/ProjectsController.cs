@@ -17,23 +17,28 @@ namespace BugTracker.Controllers
     public class ProjectsController : Controller
     {
         private readonly RaidContext _context;
-        private readonly RoleManager<AppRole> roleManager;
+        private readonly RoleManager<AppRole> _roleManager;
+        private readonly UserManager<AppUser> _userManager;
 
-        public ProjectsController(RaidContext context, RoleManager<AppRole> roleManager)
+        public ProjectsController(RaidContext context, RoleManager<AppRole> roleManager, UserManager<AppUser> userManager)
         {
             _context = context;
-            this.roleManager = roleManager;
+            _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         // GET: Projects
         public async Task<IActionResult> Index()
         {
+            var name = User.Identity.Name;
+            Console.WriteLine(name);
             return View(await _context.Projects.ToListAsync());
         }
 
         // GET: Projects/Details/5
         public async Task<IActionResult> Details(int? id, string testInput)
         {
+
             if (id == null)
             {
                 return NotFound();
@@ -102,7 +107,7 @@ namespace BugTracker.Controllers
                     Name = project.Name
                 };
 
-                IdentityResult result = await roleManager.CreateAsync(appRole);
+                IdentityResult result = await _roleManager.CreateAsync(appRole);
                 bool roleCreateSuccess = result.Succeeded;
 
                 // Return to index view or return error if role couldn't be created

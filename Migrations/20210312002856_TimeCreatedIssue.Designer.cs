@@ -4,14 +4,16 @@ using BugTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BugTracker.Migrations
 {
     [DbContext(typeof(RaidContext))]
-    partial class RaidContextModelSnapshot : ModelSnapshot
+    [Migration("20210312002856_TimeCreatedIssue")]
+    partial class TimeCreatedIssue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,13 +68,13 @@ namespace BugTracker.Migrations
                         new
                         {
                             Id = 4,
-                            ConcurrencyStamp = "accbdb24-51df-44f5-b738-7122a5b4c3df",
+                            ConcurrencyStamp = "5e28aa39-9476-4cd7-8470-2c7d0a98aeba",
                             Name = "Administrator"
                         },
                         new
                         {
                             Id = 5,
-                            ConcurrencyStamp = "8e9e1b0c-d198-442d-944f-523c0be27c75",
+                            ConcurrencyStamp = "a95981d7-8e16-4c7b-9bf5-09d546f4a65f",
                             Name = "StandardUser"
                         });
                 });
@@ -154,12 +156,12 @@ namespace BugTracker.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "aa971e07-b772-431c-bd57-bdadf0c662b9",
+                            ConcurrencyStamp = "03b37062-2e38-4df1-b959-c7fa2f116f1a",
                             EmailConfirmed = false,
                             FirstName = "Josh",
                             LastName = "Maddox",
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEMCjFeLHOxypw6lYvbJ0EITR2wjn17jNNOzORZWaJM/5Q0d0KYmS9Te1D7JTZ2LoHQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELYJ0qCDrb4NUCURV3cUKqPVrEhFL3/4zfFD9gFxZltRFD2fYO+Mv9mKwiju6u7h9Q==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
                             UserName = "JoshFM"
@@ -168,12 +170,12 @@ namespace BugTracker.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ea9983ba-4663-4ab2-bb16-cdc2f0b53a4f",
+                            ConcurrencyStamp = "ee5ac69c-8554-4edc-a77c-487d7adf8ab1",
                             EmailConfirmed = false,
                             FirstName = "Lauren",
                             LastName = "Ackleh",
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEI7y8Dv3BvQ5oRPiHXt5OhexxIUeCi/qqduy8z+dwHuD6YPzZUk7K4zDAoZ4RvRCFA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJJEHukL2tJPzqJsuKN79d2zjpNFTtqH/Bs84B9ieUkaGOmWGcLOXirHH6wwX17U9w==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
                             UserName = "LaurenGA"
@@ -182,12 +184,12 @@ namespace BugTracker.Migrations
                         {
                             Id = 3,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "67a36be7-8ae9-4109-9306-d751603684cb",
+                            ConcurrencyStamp = "829ffa57-d6c1-4f34-90c0-945111f1ed4b",
                             EmailConfirmed = false,
                             FirstName = "Spencer",
                             LastName = "Hall",
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEOyZuIBlmBN2a0Sx0owqFMxwcH+DcQQbHM5QS5zngUBgOsOJRgtsH9h3hzdP/gPhUw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELIpB/98I8pGfknhHGiCfhyWXKed1ztYORzhvtgAVeOh0pyRpQzj+V2rkAIvwTYksw==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
                             UserName = "SpencerDH"
@@ -221,9 +223,6 @@ namespace BugTracker.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("TimeCreated")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("UserCreated")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -242,6 +241,9 @@ namespace BugTracker.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<int>("AppUserID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
 
@@ -251,10 +253,9 @@ namespace BugTracker.Migrations
                     b.Property<int>("IssueID")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserCreated")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("ID");
+
+                    b.HasIndex("AppUserID");
 
                     b.HasIndex("IssueID");
 
@@ -468,11 +469,19 @@ namespace BugTracker.Migrations
 
             modelBuilder.Entity("BugTracker.Models.IssueComment", b =>
                 {
+                    b.HasOne("BugTracker.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BugTracker.Models.Issue", "Issue")
                         .WithMany("IssueComments")
                         .HasForeignKey("IssueID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AppUser");
 
                     b.Navigation("Issue");
                 });

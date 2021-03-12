@@ -67,6 +67,9 @@
                     <th>
                         Date
                     </th>
+                    <th>
+                        Created By
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -83,7 +86,10 @@
                             @issue.Priority
                         </td>
                         <td>
-                            @issue.Date
+                            @issue.TimeCreated
+                        </td>
+                        <td>
+                            @issue.UserCreated
                         </td>
                     </tr>
                 }

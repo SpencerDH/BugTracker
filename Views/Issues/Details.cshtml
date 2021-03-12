@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int IssueID = Model.issue.ID;
+    Console.WriteLine("IssueID: ");
+    Console.WriteLine(IssueID);
 }
 
 <style>
@@ -37,12 +40,28 @@
                     <tr>
                         <td>@comment.Comment</td>
                         <td>@comment.CreatedDate</td>
-                        <td>@comment.AppUser</td>
+                        <td>@comment.UserCreated</td>
                     </tr>
                 }
             </tbody>
         </table>
-        <input style="color:gray" type="text" name="commentInput" value="Add Comment" />
+        <form asp-controller="Issues" asp-action="Details" method="post">
+            <div class="form-group">
+                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#textBox">
+                    Add Comment
+                </button>
+                <div>
+                    <input type="hidden" id="UserCreated" name="UserCreated" value="@User.Identity.Name" />
+                </div>
+                <div>
+                    <input type="hidden" id="IssueID" name="IssueID" value="@IssueID" />
+                </div>
+                <div class="collapse" id="textBox">
+                    <textarea asp-for="issueComment.Comment" class="form-control" id="issueCommentTextBox" rows="3" placeholder="What are your thoughts?"></textarea>
+                    <button type="submit" class="btn btn-primary" onclick="location.href='@Url.Action("Issues", "Details", new { id = Model.issue.ID })'">Submit</button>
+                </div>
+            </div>
+        </form>
     </div>
     <div class="attachments-box">
 

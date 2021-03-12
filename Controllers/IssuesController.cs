@@ -8,16 +8,19 @@ using Microsoft.EntityFrameworkCore;
 using BugTracker.Data;
 using BugTracker.Models;
 using BugTracker.ViewModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace BugTracker.Controllers
 {
     public class IssuesController : Controller
     {
         private readonly RaidContext _context;
+        private readonly UserManager<AppUser> _userManager;
 
-        public IssuesController(RaidContext context)
+        public IssuesController(RaidContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Issues
@@ -27,19 +30,10 @@ namespace BugTracker.Controllers
             return View(await raidContext.ToListAsync());
         }
 
-        public async Task<IActionResult> TestingPartial(string? testString)
-        {
-            if (testString == null)
-            {
-                testString = "No string was provided, so the controller generated one.";
-            }
-
-            return PartialView("~/Views/Issues/_TestingPartial.cshtml", testString);
-        }
-
         // GET: Issues/Details/5
         public async Task<IActionResult> Details(int? id, int commentsPageNumber)
         {
+
             int pageSize = 5;
 
             if (id == null)
@@ -58,10 +52,26 @@ namespace BugTracker.Controllers
             IssueAndCommentsViewModel issueCommentsViewModel = new IssueAndCommentsViewModel()
             {
                 issue = issue,
-                issueComments = new PaginatedList<IssueComment>(issueComments, commentsPageNumber, pageSize)
+                issueComments = new PaginatedList<IssueComment>(issueComments, commentsPageNumber, pageSize),
+                issueComment = new IssueComment()
             };
 
             return View(issueCommentsViewModel);
+        }
+
+        // POST: Issues/Details/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Details([Bind("ID,Comment,UserCreated,IssueID")] IssueComment issueComment, int id)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(issueComment);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Details", "Issues", new { id = id });
+            }
+
+            return RedirectToAction("Details", "Issues", new { id = id });
         }
 
         // GET: Issues/Create
@@ -78,7 +88,7 @@ namespace BugTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Description,Status,Priority,ProjectTaskID")] Issue issue, int projecttaskid)
+        public async Task<IActionResult> Create([Bind("ID,Name,Description,Status,Priority,ProjectTaskID,UserCreated")] Issue issue, int projecttaskid)
         {
             if (ModelState.IsValid)
             {

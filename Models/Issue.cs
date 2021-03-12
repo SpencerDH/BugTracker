@@ -25,11 +25,20 @@ namespace BugTracker.Models
 
         [Required]
         public int Priority { get; set; }
-        public string Date { get; set; }
+
+        [Required]
+        public string UserCreated { get; set; }
+        public DateTime TimeCreated { get; set; }
 
         // Navigation properties
         public ProjectTask ProjectTask { get; set; }
         public int ProjectTaskID { get; set; }
         public ICollection<IssueComment> IssueComments { get; set; }
+
+        // Constructor to initialize time created
+        public Issue()
+        {
+            TimeCreated = DateTime.Now;
+        }
     }
 }

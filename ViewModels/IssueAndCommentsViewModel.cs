@@ -9,6 +9,8 @@ namespace BugTracker.ViewModels
     public class IssueAndCommentsViewModel
     {
         public Issue issue { get; set; }
+
+        public IssueComment issueComment { get; set; }
         public IEnumerable<IssueComment> issueComments { get; set; }
     }
 }
