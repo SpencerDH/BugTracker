@@ -30,8 +30,6 @@ namespace BugTracker.Controllers
         // GET: Projects
         public async Task<IActionResult> Index()
         {
-            var name = User.Identity.Name;
-            Console.WriteLine(name);
             return View(await _context.Projects.ToListAsync());
         }
 
@@ -119,6 +117,8 @@ namespace BugTracker.Controllers
             }
             return View(project);
         }
+
+        //  
 
         // GET: Projects/Edit/5
         [Authorize(Roles = "Administrator")]

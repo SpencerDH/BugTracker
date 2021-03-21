@@ -42,6 +42,10 @@ namespace BugTracker.Controllers
 
             // Select the user based on the id with userManager; return an error if user doesn't exist
             var user = await _context.AppUsers
+                .Include(au => au.UserIssues)
+                    .ThenInclude(ui => ui.Issue)
+                .Include(au => au.IssueComments)
+                    .ThenInclude(ic => ic.Issue)
                 .FirstOrDefaultAsync(u => u.Id == id);
 
             if (user == null)
@@ -50,6 +54,7 @@ namespace BugTracker.Controllers
                 return View("NotFound");
             }
 
+            /*
             // Initialize ViewModel list, loop through all roles and add ViewModel for each one to list
             var viewModelList = new List<UserRolesViewModel>();
             foreach (var role in RoleManager.Roles)
@@ -73,6 +78,9 @@ namespace BugTracker.Controllers
             }
 
             return View(viewModelList);
+            */
+
+            return View(user);
         }
 
         [HttpPost]

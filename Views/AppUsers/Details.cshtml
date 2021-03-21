@@ -1,4 +1,4 @@
-﻿@model List<BugTracker.ViewModels.UserRolesViewModel>;
+﻿@model BugTracker.Models.AppUser
 
 @{
     ViewData["Title"] = "Details";
@@ -7,27 +7,68 @@
 }
 
 <h1>Details</h1>
-<form method="post">
-    <div class="card">
-        <div class="card-header">
-            <h2>Manage User Roles</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Issues</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ui in Model.UserIssues)
+        {
+            <tr>
+                <td>
+                    @ui.Issue.Name
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Comment</th>
+            <th>Date</th>
+            <th>Issue</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var comment in Model.IssueComments)
+        {
+            <tr>
+                <td>@comment.Comment</td>
+                <td>@comment.CreatedDate</td>
+                <td>@comment.Issue.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@*
+        <form method="post">
+        <div class="card">
+            <div class="card-header">
+                <h2>Manage User Roles</h2>
+            </div>
+            <div class="card-body">
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <div class="form-check m-1">
+                        <input type="hidden" asp-for="@Model[i].RoleId"/>
+                        <input type="hidden" asp-for="@Model[i].RoleName"/>
+                        <input asp-for="@Model[i].IsSelected" class="form-check-input"/>
+                        <label class="form-check-label" asp-for="@Model[i].IsSelected">
+                            @Model[i].RoleName
+                        </label>
+                    </div>
+                }
+                <div asp-validation-summary="All" class="text-danger"></div>
+            </div>
+            <div class="card-footer">
+                <input type="submit" value="Update" class="btn btn-primary" style="width:auto"/>
+            </div>
         </div>
-        <div class="card-body">
-            @for (int i = 0; i < Model.Count; i++)
-            {
-                <div class="form-check m-1">
-                    <input type="hidden" asp-for="@Model[i].RoleId"/>
-                    <input type="hidden" asp-for="@Model[i].RoleName"/>
-                    <input asp-for="@Model[i].IsSelected" class="form-check-input"/>
-                    <label class="form-check-label" asp-for="@Model[i].IsSelected">
-                        @Model[i].RoleName
-                    </label>
-                </div>
-            }
-            <div asp-validation-summary="All" class="text-danger"></div>
-        </div>
-        <div class="card-footer">
-            <input type="submit" value="Update" class="btn btn-primary" style="width:auto"/>
-        </div>
-    </div>
-</form>
+    </form>
+*@

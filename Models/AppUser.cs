@@ -11,8 +11,8 @@ namespace BugTracker.Models
         public string LastName { get; set; }
 
         // Navigation properties
-        // public IList<UserRole> UserRoles { get; set; }
         public ICollection<ProjectTask> ProjectTasks { get; set; }
-
+        public ICollection<UserIssue> UserIssues { get; set; }
+        public ICollection<IssueComment> IssueComments { get; set; }
     }
 }

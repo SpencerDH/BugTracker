@@ -9,6 +9,7 @@ using BugTracker.Data;
 using BugTracker.Models;
 using BugTracker.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BugTracker.Controllers
 {
@@ -16,11 +17,13 @@ namespace BugTracker.Controllers
     {
         private readonly RaidContext _context;
         private readonly UserManager<AppUser> _userManager;
+        private readonly RoleManager<AppRole> _roleManager;
 
-        public IssuesController(RaidContext context, UserManager<AppUser> userManager)
+        public IssuesController(RaidContext context, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
             _context = context;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         // GET: Issues
@@ -43,8 +46,16 @@ namespace BugTracker.Controllers
 
             var issue = await _context.Issues
                 .Include(i => i.ProjectTask)
+                .Include(i => i.UserIssues)
+                    .ThenInclude(ui => ui.AppUser)
+                        // .ThenInclude(u => u.UserName)
                 .Include(i => i.IssueComments)
                 .FirstOrDefaultAsync(m => m.ID == id);
+
+            if (issue.Status == "Closed")
+            {
+                //
+            }
 
             var issueComments = from ic in issue.IssueComments
                                 select ic;
@@ -64,8 +75,24 @@ namespace BugTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Details([Bind("ID,Comment,UserCreated,IssueID")] IssueComment issueComment, int id)
         {
+            // Check to see if issue is closed; if it is, then return view
+            var issue = await _context.Issues
+                .FirstOrDefaultAsync(i => i.ID == id);
+
+            if (issue.Status == "Closed")
+            {
+                // Probably should perform some action here to show the user that the action cannot be completed.
+                // Or maybe handle that in the view; I'm not sure.
+                return RedirectToAction("Details", "Issues", new { id = id });
+            }
+
             if (ModelState.IsValid)
             {
+                // Add AppUser property
+                var currentUser = await _userManager.GetUserAsync(User);
+                issueComment.AppUser = currentUser;
+
+                // Save new issueComment
                 _context.Add(issueComment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Details", "Issues", new { id = id });
@@ -92,10 +119,63 @@ namespace BugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Get current user ID
+                var currentUserName = User.Identity.Name;
+                var currentUser = await _userManager.FindByNameAsync(currentUserName);
+
+                // Initialize userIssue
+                var userIssue = new UserIssue
+                {
+                    IssueID = issue.ID,
+                    AppUserID = currentUser.Id
+                };
+
+                // Add the new issue to the database
+                issue.UserIssues = new List<UserIssue>
+                {
+                    userIssue
+                };
+
                 _context.Add(issue);
                 await _context.SaveChangesAsync();
+
+                
+
+                /*
+                var currentIssue = await _context.Issues
+                    .Include(i => i.UserIssues)
+                    .FirstOrDefaultAsync(i => i.ID == issue.ID);
+
+                currentIssue.UserIssues.Add(userIssue);
+                */
+
                 return RedirectToAction("Details", "ProjectTasks", new { id = projecttaskid });
-                // return RedirectToAction("Details", "ProjectTasks");
+
+                // The current challenge is to figure out how to add a new userIssue to the ICollections navigation property
+                // for UserIssues without overwriting the current value for that property.
+
+                /*
+                // Create the new role associated with the issue
+                string issueRoleName = issue.Name + "_Role";
+                AppRole issueRole = new AppRole
+                {
+                    Name = issueRoleName
+                };
+
+                IdentityResult result = await _roleManager.CreateAsync(issueRole);
+                bool roleCreateSuccess = result.Succeeded;
+
+                if (roleCreateSuccess)
+                {
+                    // Add the user who created the issue to the role automatically
+                    var currentUserName = User.Identity.Name;
+                    var currentUser = await _userManager.FindByNameAsync(currentUserName);
+                    var addingUserToRole = await _userManager.AddToRoleAsync(currentUser, issueRoleName);
+
+                    // Return to the tasks page
+                    return RedirectToAction("Details", "ProjectTasks", new { id = projecttaskid });
+                }  
+                */
             }
 
             return View(issue);
@@ -152,6 +232,28 @@ namespace BugTracker.Controllers
             }
             ViewData["ProjectTaskID"] = new SelectList(_context.ProjectTasks, "ID", "ID", issue.ProjectTaskID);
             return View(issue);
+        }
+
+        // POST: Issues/Close/5
+        public async Task<IActionResult> Close(int id)
+        {
+            var issue = await _context.Issues
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+            issue.Status = "Closed";
+            if (ModelState.IsValid)
+            {
+                _context.Update(issue);
+                await _context.SaveChangesAsync();
+            }
+
+            /*
+            var issueName = issue.Name;
+            var issueRole = await _roleManager.FindByNameAsync(issueName + "_Role");
+            var resultFromDeleteRole = await _roleManager.DeleteAsync(issueRole);
+            */
+
+            return RedirectToAction("Details", "Issues", new { id = id });
         }
 
         // GET: Issues/Delete/5

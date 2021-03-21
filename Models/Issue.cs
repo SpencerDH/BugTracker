@@ -34,6 +34,7 @@ namespace BugTracker.Models
         public ProjectTask ProjectTask { get; set; }
         public int ProjectTaskID { get; set; }
         public ICollection<IssueComment> IssueComments { get; set; }
+        public ICollection<UserIssue> UserIssues { get; set; }
 
         // Constructor to initialize time created
         public Issue()
