@@ -34,7 +34,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: Projects/Details/5
-        public async Task<IActionResult> Details(int? id, string testInput)
+        public async Task<IActionResult> Details(int? id, string? testInput)
         {
 
             if (id == null)
