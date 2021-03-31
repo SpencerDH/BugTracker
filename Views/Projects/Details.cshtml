@@ -12,9 +12,6 @@
 @foreach (var item in Model.ProjectTasks)
 {
     <br />
-
-    var tempDataDict = (Dictionary<int, string>)TempData["ViewModelsParamsDictionary"];
-    var testOutput = tempDataDict[item.ID];
     
     <div class="card">
         <div class="card-header text-center">
@@ -34,9 +31,6 @@
                 <div class="collapse" id="collapseOne">
                     <div class="card card-body">
                         Description of the project goes here.
-                        @*<h4>@testOutput</h4>
-                            <input type="text" name="testInput" value="@testOutput" />
-                            <input type="submit" value="Submit" class="btn btn-default" />*@
 
                     </div>
                 </div>
@@ -52,10 +46,6 @@
                     <div class="card card-body">
                         <form asp-action="Details" method="get">
                             <div class="form-actions no-color">
-                                <p>
-                                    <input type="text" name="testInput" value="@testOutput" />
-                                    <input type="submit" value="Submit" class="btn btn-default" />
-                                </p>
                             </div>
                         </form>
                     </div>

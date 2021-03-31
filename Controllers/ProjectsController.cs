@@ -34,7 +34,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: Projects/Details/5
-        public async Task<IActionResult> Details(int? id, string? testInput)
+        public async Task<IActionResult> Details(int? id)
         {
 
             if (id == null)
@@ -50,6 +50,7 @@ namespace BugTracker.Controllers
             var projectTasks = from pt in project.ProjectTasks
                                select pt;
 
+            /*
             // Create TempData dictionary
             if (TempData["ViewModelsParamsDictionary"] == null)
             {
@@ -69,6 +70,7 @@ namespace BugTracker.Controllers
                 paramsDict[5] = testInput + " and testing this too";
                 TempData["ViewModelsParamsDictionary"] = paramsDict;
             }
+            */
 
             if (project == null)
             {

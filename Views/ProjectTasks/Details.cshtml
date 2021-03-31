@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int previousPage = Model.issuesList.pageNumber - 1;
+    int nextPage = Model.issuesList.pageNumber + 1;
 }
 
 <style>
@@ -94,23 +96,76 @@
                     </tr>
                 }
             </tbody>
-        </table>
-        <table>
-            <tr style="text-align:center">
+        </table> <!-- End issues table -->
+
+        <!-- Issues table page list -->
+        <nav>
+            <ul class="pagination">
+                <!-- Previous page button -->
+                @if (Model.issuesList.HasPreviousPage())
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-action="Details" method="get" asp-route-issuesPageNumber="@previousPage" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+                }
+
+                <!-- Listing of current pages -->
                 @foreach (var number in Model.issuesList.currentPagesBox)
                 {
-                    <td><a asp-action="Details" method="get" asp-route-issuesPageNumber="@number">@number</a></td>
+                    if (number == Model.issuesList.pageNumber)
+                    {
+                        <li class="page-item active"><a class="page-link" asp-action="Details" method="get" asp-route-issuesPageNumber="@number">@number</a></li>
+                    }
+                    else
+                    {
+                        <li class="page-item"><a class="page-link" asp-action="Details" method="get" asp-route-issuesPageNumber="@number">@number</a></li>
+                    }
                 }
-            </tr>
-        </table>
+
+                <!-- Next page button -->
+                @if (Model.issuesList.HasNextPage())
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-action="Details" method="get" asp-route-issuesPageNumber="@nextPage" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+
         <table>
             <tr>
                 <td style="text-align:center; width:450px;">
                     @*
-        <a asp-controller="Issues" asp-action="Create" asp-route-projecttaskid="@Model.projectTask.ID">Create New Issue</a>
+                    <a asp-controller="Issues" asp-action="Create" asp-route-projecttaskid="@Model.projectTask.ID">Create New Issue</a>
                     *@
                     <button type="button" class="btn btn-primary" data-toggle="ajax-modal" data-target="#createIssue"
-                            data-url="@Url.Action("Create", "Issues", new { projecttaskid = Model.projectTask.ID })">Create New Issue</button>
+                            data-url="@Url.Action("Create", "Issues", new { projecttaskid = Model.projectTask.ID })">
+                        Create New Issue
+                    </button>
                 </td>
             </tr>
         </table>

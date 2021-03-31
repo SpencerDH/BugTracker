@@ -47,6 +47,7 @@
                                 }
                             </select>
                             <span asp-validation-for="Priority" class="text-danger"></span>
+                            <br />
                             <div class="form-group">
                                 <input type="submit" value="Create" class="btn btn-primary" onclick="location.href='@Url.Action("Create", "Issues", new { projecttaskid = ViewBag.projecttaskid })'"/>
                             </div>
@@ -59,12 +60,6 @@
                         </div>
                     </div>
                 </form>
-            </div>
-
-            <!--  Modal footer, with close button -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-save="modal">Save</button>
             </div>
         </div>
     </div>
