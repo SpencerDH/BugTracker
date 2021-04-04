@@ -217,3 +217,4 @@ C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\ProjectTasks\_Test
 C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\Projects\_IssuesTable.cshtml.g.cs
 C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\Projects\Components\TaskCard\Default.cshtml.g.cs
 C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\Issues\_CreateIssuePartial.cshtml.g.cs
+C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\Issues\UserIssuesIndex.cshtml.g.cs

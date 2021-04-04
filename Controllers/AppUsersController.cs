@@ -9,6 +9,7 @@ using BugTracker.Data;
 using BugTracker.Models;
 using BugTracker.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BugTracker.Controllers
 {
@@ -35,11 +36,15 @@ namespace BugTracker.Controllers
         }
 
         // GET: AppUsers/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, int? commentsPageNumber, int? issuesPageNumber)
         {
+            // Create fixed page size
+            int pageSize = 5;
+
             // Assign userId field in ViewBag based on the id passed to the controller
             ViewBag.userId = id;
 
+            /*
             // Select the user based on the id with userManager; return an error if user doesn't exist
             var user = await _context.AppUsers
                 .Include(au => au.UserIssues)
@@ -47,40 +52,42 @@ namespace BugTracker.Controllers
                 .Include(au => au.IssueComments)
                     .ThenInclude(ic => ic.Issue)
                 .FirstOrDefaultAsync(u => u.Id == id);
+            */
 
-            if (user == null)
+            // Get user's username and confirm that user exists
+            var currentUser = await _context.AppUsers
+                .FirstOrDefaultAsync(au => au.Id == id);
+
+            if (currentUser == null)
             {
                 ViewBag.ErrorMessage = $"User with Id = {id} cannot be found";
                 return View("NotFound");
             }
 
-            /*
-            // Initialize ViewModel list, loop through all roles and add ViewModel for each one to list
-            var viewModelList = new List<UserRolesViewModel>();
-            foreach (var role in RoleManager.Roles)
+            var currentUserName = currentUser.UserName;
+
+            // Get issues for this user
+            var userIssues = await _context.AppUsers
+                .Include(au => au.UserIssues)
+                    .ThenInclude(ui => ui.Issue)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            var assignedIssues = from ui in userIssues.UserIssues
+                                 select ui.Issue;
+
+            // Get comments from this user
+            var issueComments = _context.IssueComments
+                .Where(ic => ic.UserCreated == currentUserName)
+                .Include(ic => ic.Issue);
+
+            // Create view model
+            UserDetailsViewModel viewModel = new UserDetailsViewModel
             {
-                var viewModel = new UserRolesViewModel
-                {
-                    RoleId = role.Id,
-                    RoleName = role.Name
-                };
+                IssueComments = new PaginatedList<IssueComment>(issueComments, commentsPageNumber ?? 1, pageSize),
+                Issues = new PaginatedList<Issue>(assignedIssues, issuesPageNumber ?? 1, pageSize)
+            };
 
-                if (await UserMgr.IsInRoleAsync(user, role.Name))
-                {
-                    viewModel.IsSelected = true;
-                }
-                else
-                {
-                    viewModel.IsSelected = false;
-                }
-
-                viewModelList.Add(viewModel);
-            }
-
-            return View(viewModelList);
-            */
-
-            return View(user);
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -200,6 +207,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: AppUsers/Delete/5
+        [Authorize("Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

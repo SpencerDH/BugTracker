@@ -1,74 +1,209 @@
-﻿@model BugTracker.Models.AppUser
+﻿@model BugTracker.ViewModels.UserDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var userId = ViewBag.userId;
+
+    // Page navigation
+    var issuesPreviousPage = Model.Issues.HasPreviousPage();
+    var issuesNextPage = Model.Issues.HasNextPage();
+    var commentsPreviousPage = Model.IssueComments.HasPreviousPage();
+    var commentsNextPage = Model.IssueComments.HasNextPage();
 }
+
+<style>
+    .table-and-navigation {
+        height: 80%;
+        width: 40%;
+    }
+
+    #right-table {
+        margin-right: 20px;
+    }
+</style>
 
 <h1>Details</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Issues</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var ui in Model.UserIssues)
-        {
-            <tr>
-                <td>
-                    @ui.Issue.Name
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<!-- Begin div for the two tables and navigation -->
+<div>
+    <!-- Begin flex row div containing the two tables -->
+    <div class="d-flex flex-row">
+        <!-- Begin div flex row containing the issue table and its navigation, with one row for each -->
+        <div class="d-flex flex-column table-and-navigation" id="right-table">
+            <!-- Begin div containing issues table -->
+            <div class="d-flex">
+                <!-- Begin table of assigned issues -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Issues</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var issue in Model.Issues)
+                        {
+                            <tr>
+                                <td>
+                                    @issue.Name
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table> <!-- End table of assigned issues -->
+            </div> <!-- End div containing issues table -->
+            <!-- Begin div containing issues table navigation -->
+            <div class="d-flex">
+                <!-- Begin navigation for the issues table -->
+                <nav>
+                    <ul class="pagination">
+                        <!-- Previous page button -->
+                        @if (Model.Issues.HasPreviousPage())
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-action="Details" method="get" asp-route-issuesPageNumber="@issuesPreviousPage" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                        }
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Comment</th>
-            <th>Date</th>
-            <th>Issue</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var comment in Model.IssueComments)
-        {
-            <tr>
-                <td>@comment.Comment</td>
-                <td>@comment.CreatedDate</td>
-                <td>@comment.Issue.Name</td>
-            </tr>
-        }
-    </tbody>
-</table>
+                        <!-- Listing of current pages -->
+                        @foreach (var number in Model.Issues.currentPagesBox)
+                        {
+                            if (number == Model.Issues.pageNumber)
+                            {
+                                <li class="page-item active"><a class="page-link" asp-action="Details" method="get" asp-route-issuesPageNumber="@number">@number</a></li>
+                            }
+                            else
+                            {
+                                <li class="page-item"><a class="page-link" asp-action="Details" method="get" asp-route-issuesPageNumber="@number">@number</a></li>
+                            }
+                        }
 
-@*
-        <form method="post">
-        <div class="card">
-            <div class="card-header">
-                <h2>Manage User Roles</h2>
+                        <!-- Next page button -->
+                        @if (Model.Issues.HasNextPage())
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-action="Details" method="get" asp-route-issuesPageNumber="@issuesNextPage" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </nav> <!-- End issues table page list -->
+            </div> <!-- End div containing issues table navigation -->
+        </div> <!-- End div flex row containing issues table and navigation -->
+
+        <!-- Begin div flex row containing comments table and navigation with one row for each -->
+        <div class="d-flex flex-column table-and-navigation" id="left-table">
+            <!-- Begin div containing comments table -->
+            <div class="d-flex">
+                <!-- Begin table of user's comments on issues -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Comment</th>
+                            <th>Date</th>
+                            <th>Issue</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var comment in Model.IssueComments)
+                        {
+                            <tr>
+                                <td>@comment.Comment</td>
+                                <td>@comment.CreatedDate</td>
+                                <td>@comment.Issue.Name</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table> <!-- End table of user's comments on issues -->
+            </div> <!-- End div containing comments table -->
+            <!-- Begin div containing comments table navigation -->
+            <div class="d-flex">
+                <!-- Begin navigation for the comments table -->
+                <nav>
+                    <ul class="pagination">
+                        <!-- Previous page button -->
+                        @if (Model.IssueComments.HasPreviousPage())
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-action="Details" method="get" asp-route-commentsPageNumber="@commentsPreviousPage" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                        }
+
+                        <!-- Listing of current pages -->
+                        @foreach (var number in Model.IssueComments.currentPagesBox)
+                        {
+                            if (number == Model.IssueComments.pageNumber)
+                            {
+                                <li class="page-item active"><a class="page-link" asp-action="Details" method="get" asp-route-commentsPageNumber="@number">@number</a></li>
+                            }
+                            else
+                            {
+                                <li class="page-item"><a class="page-link" asp-action="Details" method="get" asp-route-commentsPageNumber="@number">@number</a></li>
+                            }
+                        }
+
+                        <!-- Next page button -->
+                        @if (Model.IssueComments.HasNextPage())
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-action="Details" method="get" asp-route-commentsPageNumber="@commentsNextPage" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </nav> <!-- End comments table navigation -->
             </div>
-            <div class="card-body">
-                @for (int i = 0; i < Model.Count; i++)
-                {
-                    <div class="form-check m-1">
-                        <input type="hidden" asp-for="@Model[i].RoleId"/>
-                        <input type="hidden" asp-for="@Model[i].RoleName"/>
-                        <input asp-for="@Model[i].IsSelected" class="form-check-input"/>
-                        <label class="form-check-label" asp-for="@Model[i].IsSelected">
-                            @Model[i].RoleName
-                        </label>
-                    </div>
-                }
-                <div asp-validation-summary="All" class="text-danger"></div>
-            </div>
-            <div class="card-footer">
-                <input type="submit" value="Update" class="btn btn-primary" style="width:auto"/>
-            </div>
-        </div>
-    </form>
-*@
+        </div> <!-- End div containing comments table and navigation -->
+    </div> <!-- End flex row div containing the two tables -->
+</div> <!-- End div containing the two tables and their navigations -->
+
+
+
+
+

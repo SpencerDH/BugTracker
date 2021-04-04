@@ -4,14 +4,16 @@ using BugTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BugTracker.Migrations
 {
     [DbContext(typeof(RaidContext))]
-    partial class RaidContextModelSnapshot : ModelSnapshot
+    [Migration("20210331234119_AddingViewModel")]
+    partial class AddingViewModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,13 +68,13 @@ namespace BugTracker.Migrations
                         new
                         {
                             Id = 4,
-                            ConcurrencyStamp = "42ee940e-a197-4f0f-9f6f-65fd75f1dc0c",
+                            ConcurrencyStamp = "ecef021c-2d03-4960-9489-efa30c50a402",
                             Name = "Administrator"
                         },
                         new
                         {
                             Id = 5,
-                            ConcurrencyStamp = "314bff69-628d-47a0-b471-af9c5b56a6e6",
+                            ConcurrencyStamp = "a175757c-51df-477b-b50a-0d294333c548",
                             Name = "StandardUser"
                         });
                 });
@@ -154,12 +156,12 @@ namespace BugTracker.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5a567cd7-3c0b-4d93-bc3b-e0fa1c20354f",
+                            ConcurrencyStamp = "a974e36d-c389-47ed-ac96-ebe922488310",
                             EmailConfirmed = false,
                             FirstName = "Josh",
                             LastName = "Maddox",
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEGRc3QdDsgkDo5Ga41rvHecaEObJ0VuhIlLOr7Pgq5HHYeH2XX89+fqlI3AGSQAMSA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEE6BzDwXL3IQXpEEb+4DBQG0C2gEQib7+vPoYe82Pow5DkQURWVHB7U4exhVMJmnlg==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
                             UserName = "JoshFM"
@@ -168,12 +170,12 @@ namespace BugTracker.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bc471fe0-d5cb-42a5-9b91-3aa6353bd5e1",
+                            ConcurrencyStamp = "44cfffbd-8dcf-4c9f-8aa5-5a2edb789a7a",
                             EmailConfirmed = false,
                             FirstName = "Lauren",
                             LastName = "Ackleh",
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEOA/MpoBAH2grC2GEfgzY9E4/8ljLRt7aQtPMqRRggAJH1UVp7gkIR5Ug+nSmVmGxA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEA2jREUY6O1PCf7vytseDMFeu86+6WLq7kHtacc+15uYsKyDjhetUiNCcb7/K1Foog==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
                             UserName = "LaurenGA"
@@ -182,12 +184,12 @@ namespace BugTracker.Migrations
                         {
                             Id = 3,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8d50826e-bc22-409e-b791-7c1c2a71bb8f",
+                            ConcurrencyStamp = "fe5b59d0-0c30-42d3-a340-ecf9bb67efdb",
                             EmailConfirmed = false,
                             FirstName = "Spencer",
                             LastName = "Hall",
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEBQke/uK9XqU4J7HkBBHlSSxAOAJpXXzfkfva4dxz77m5+1IZh7w0Cu8+Rt7nGNlfg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJScj6983x2hvx7pcaEKXSyoWTJXi1g0b2/e4nNz1VpkbJvRJdpNJpNc8dEh16sYaw==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
                             UserName = "SpencerDH"
@@ -263,7 +265,7 @@ namespace BugTracker.Migrations
 
                     b.HasIndex("IssueID");
 
-                    b.ToTable("IssueComments");
+                    b.ToTable("IssueComment");
                 });
 
             modelBuilder.Entity("BugTracker.Models.Project", b =>

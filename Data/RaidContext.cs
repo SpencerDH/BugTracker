@@ -19,6 +19,7 @@ namespace BugTracker.Data
         public DbSet<ProjectTask> ProjectTasks { get; set; }
         public DbSet<Issue> Issues { get; set; }
         public DbSet<UserIssue> UserIssues { get; set; }
+        public DbSet<IssueComment> IssueComments { get; set; }
 
         // Seeding data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
