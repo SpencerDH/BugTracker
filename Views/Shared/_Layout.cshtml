@@ -1,6 +1,14 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<AppUser> userManager
+@{ 
+    var currentUser = await userManager.FindByNameAsync(User.Identity.Name);
+    var currentUserId = currentUser.Id;
+    Console.WriteLine(currentUserId);
+}
+
 <head>
 
     <meta charset="utf-8">
@@ -9,7 +17,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Dashboard</title>
+    <title>Bug Tracker - Dashboard</title>
 
     <!-- Custom fonts for this template-->
     <link href="~/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -34,7 +42,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Bug Tracker<sup>2</sup></div>
+                <div class="sidebar-brand-text mx-3">Bug Tracker</div>
             </a>
 
             <!-- Divider -->
@@ -79,14 +87,9 @@
                 My Features
             </div>
 
-            <!-- Nav Item: User's Tickets -->
-            <li class="nav-item">
-                <a class="nav-link" href="#">My Tickets</a>
-            </li>
-
             <!-- Nav Item: User's Profile -->
             <li class="nav-item">
-                <a class="nav-link" href="#">My Profile</a>
+                <a class="nav-link" asp-controller="AppUsers" asp-action="Details" asp-route-id="@currentUserId">My Profile</a>
             </li>
 
             <!-- Divider -->

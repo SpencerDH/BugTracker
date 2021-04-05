@@ -50,6 +50,8 @@ namespace BugTracker.Controllers
                     .ThenInclude(ui => ui.AppUser)
                         // .ThenInclude(u => u.UserName)
                 .Include(i => i.IssueComments)
+                    .ThenInclude(ic => ic.AppUser)
+                        // .Where(au != null)
                 .FirstOrDefaultAsync(m => m.ID == id);
 
             if (issue.Status == "Closed")
@@ -63,7 +65,7 @@ namespace BugTracker.Controllers
             IssueAndCommentsViewModel issueCommentsViewModel = new IssueAndCommentsViewModel()
             {
                 issue = issue,
-                issueComments = new PaginatedList<IssueComment>(issueComments, commentsPageNumber, pageSize),
+                issueComments = new PaginatedList<IssueComment>(issue.IssueComments, commentsPageNumber, pageSize),
                 issueComment = new IssueComment()
             };
 

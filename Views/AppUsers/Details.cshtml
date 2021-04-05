@@ -1,18 +1,21 @@
 ﻿@model BugTracker.ViewModels.UserDetailsViewModel
 
 @{
+    // Layout data
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var userId = ViewBag.userId;
 
     // Page navigation
-    var issuesPreviousPage = Model.Issues.HasPreviousPage();
-    var issuesNextPage = Model.Issues.HasNextPage();
-    var commentsPreviousPage = Model.IssueComments.HasPreviousPage();
-    var commentsNextPage = Model.IssueComments.HasNextPage();
+    var issuesPreviousPage = Model.Issues.pageNumber - 1;
+    var issuesNextPage = Model.Issues.pageNumber + 1;
+    var commentsPreviousPage = Model.IssueComments.pageNumber - 1;
+    var commentsNextPage = Model.IssueComments.pageNumber + 1;
 }
 
 <style>
+    .user-page-header {
+        text-align: center;
+    }
     .table-and-navigation {
         height: 80%;
         width: 40%;
@@ -23,7 +26,7 @@
     }
 </style>
 
-<h1>Details</h1>
+<h1 class="user-page-header">@Model.currentUserName</h1>
 
 <!-- Begin div for the two tables and navigation -->
 <div>
@@ -45,7 +48,7 @@
                         {
                             <tr>
                                 <td>
-                                    @issue.Name
+                                    <a asp-controller="Issues" asp-action="Details" asp-route-id="@issue.ID">@issue.Name</a>
                                 </td>
                             </tr>
                         }
@@ -61,7 +64,7 @@
                         @if (Model.Issues.HasPreviousPage())
                         {
                             <li class="page-item">
-                                <a class="page-link" asp-action="Details" method="get" asp-route-issuesPageNumber="@issuesPreviousPage" aria-label="Previous">
+                                <a class="page-link" asp-action="Details" method="get" asp-route-issuesPageNumber="@issuesPreviousPage" asp-route-commentsPageNumber="@Model.commentsPageNumber" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                     <span class="sr-only">Previous</span>
                                 </a>
@@ -82,11 +85,11 @@
                         {
                             if (number == Model.Issues.pageNumber)
                             {
-                                <li class="page-item active"><a class="page-link" asp-action="Details" method="get" asp-route-issuesPageNumber="@number">@number</a></li>
+                                <li class="page-item active"><a class="page-link" asp-action="Details" method="get" asp-route-issuesPageNumber="@number" asp-route-commentsPageNumber="@Model.commentsPageNumber">@number</a></li>
                             }
                             else
                             {
-                                <li class="page-item"><a class="page-link" asp-action="Details" method="get" asp-route-issuesPageNumber="@number">@number</a></li>
+                                <li class="page-item"><a class="page-link" asp-action="Details" method="get" asp-route-issuesPageNumber="@number" asp-route-commentsPageNumber="@Model.commentsPageNumber">@number</a></li>
                             }
                         }
 
@@ -94,7 +97,7 @@
                         @if (Model.Issues.HasNextPage())
                         {
                             <li class="page-item">
-                                <a class="page-link" asp-action="Details" method="get" asp-route-issuesPageNumber="@issuesNextPage" aria-label="Next">
+                                <a class="page-link" asp-action="Details" method="get" asp-route-issuesPageNumber="@issuesNextPage" asp-route-commentsPageNumber="@Model.commentsPageNumber" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                     <span class="sr-only">Next</span>
                                 </a>
@@ -133,7 +136,7 @@
                             <tr>
                                 <td>@comment.Comment</td>
                                 <td>@comment.CreatedDate</td>
-                                <td>@comment.Issue.Name</td>
+                                <td><a asp-controller="Issues" asp-action="Details" asp-route-id="@comment.Issue.ID">@comment.Issue.Name</a></td>
                             </tr>
                         }
                     </tbody>
@@ -148,7 +151,7 @@
                         @if (Model.IssueComments.HasPreviousPage())
                         {
                             <li class="page-item">
-                                <a class="page-link" asp-action="Details" method="get" asp-route-commentsPageNumber="@commentsPreviousPage" aria-label="Previous">
+                                <a class="page-link" asp-action="Details" method="get" asp-route-commentsPageNumber="@commentsPreviousPage" asp-route-issuesPageNumber="@Model.issuesPageNumber" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                     <span class="sr-only">Previous</span>
                                 </a>
@@ -169,11 +172,11 @@
                         {
                             if (number == Model.IssueComments.pageNumber)
                             {
-                                <li class="page-item active"><a class="page-link" asp-action="Details" method="get" asp-route-commentsPageNumber="@number">@number</a></li>
+                                <li class="page-item active"><a class="page-link" asp-action="Details" method="get" asp-route-commentsPageNumber="@number" asp-route-issuesPageNumber="@Model.issuesPageNumber">@number</a></li>
                             }
                             else
                             {
-                                <li class="page-item"><a class="page-link" asp-action="Details" method="get" asp-route-commentsPageNumber="@number">@number</a></li>
+                                <li class="page-item"><a class="page-link" asp-action="Details" method="get" asp-route-commentsPageNumber="@number" asp-route-issuesPageNumber="@Model.issuesPageNumber">@number</a></li>
                             }
                         }
 
@@ -181,7 +184,7 @@
                         @if (Model.IssueComments.HasNextPage())
                         {
                             <li class="page-item">
-                                <a class="page-link" asp-action="Details" method="get" asp-route-commentsPageNumber="@commentsNextPage" aria-label="Next">
+                                <a class="page-link" asp-action="Details" method="get" asp-route-commentsPageNumber="@commentsNextPage" asp-route-issuesPageNumber="@Model.issuesPageNumber" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                     <span class="sr-only">Next</span>
                                 </a>

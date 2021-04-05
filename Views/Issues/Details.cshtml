@@ -36,11 +36,11 @@
             <tbody>
                 @foreach (var comment in Model.issueComments)
                 {
-                    <tr>
-                        <td>@comment.Comment</td>
-                        <td>@comment.CreatedDate</td>
-                        <td>@comment.UserCreated</td>
-                    </tr>
+                <tr>
+                    <td>@comment.Comment</td>
+                    <td>@comment.CreatedDate</td>
+                    <td><a asp-controller="AppUsers" asp-action="Details" asp-route-id="@comment.AppUser.Id">@comment.UserCreated</a></td>
+                </tr>
                 }
             </tbody>
         </table>
