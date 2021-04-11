@@ -8,6 +8,10 @@
 }
 
 <style>
+    h4 {
+        text-align: center;
+    }
+
     div.attachments-box {
         border: solid gray;
         margin: 20px;
@@ -18,12 +22,17 @@
         display: flex;
         flex-direction: row;
     }
+
+    #closeIssueFooter {
+        width: 100%;
+    }
 </style>
 
 <h1 style="text-align:center">@Model.issue.Name</h1>
+<br />
 
-<div class="flex-container">
-    <div id="issuecomments">
+<div class="flex-container"> <!-- Begin div containing issue comments table and navigation -->
+    <div class="d-flex justify-content-center" id="issuecomments"> <!-- Begin div for issue comments table -->
         <h4>Comments</h4>
         <table class="table">
             <thead>
@@ -47,14 +56,15 @@
         <form asp-action="Details" method="post" asp-route-id="@Model.issue.ID">
             <div class="form-group">
                 <textarea asp-for="issueComment.Comment" class="form-control" id="issueCommentTextBox" rows="3" placeholder="What are your thoughts?"></textarea>
+                <br />
 
                 @if (issueStatus == "Open")
                 {
-                    <input type="submit" value="Submit" class="btn btn-primary" />
+                    <input type="submit" value="Submit" class="btn btn-primary justify-content-center" />
                 }
                 else
                 {
-                    <input type="submit" value="Comments Cannot Be Submitted" class="btn btn-secondary" />
+                    <input type="submit" value="Comments Cannot Be Submitted" class="btn btn-secondary justify-content-center" />
                 }
 
                 <div>
@@ -65,30 +75,46 @@
                 </div>
             </div>
         </form>
+    </div> <!-- End div containing issue comments table -->
+    <div class="d-flex justify-content-center"> <!-- Begin div containing table navigation -->
+
+    </div> <!-- End div containing table navigation -->
+    <div class="d-flex justify-content-center"> <!-- Begin div containing the submission form -->
+
     </div>
+
+
+
+
+    <!-- Div containing the attachments feature -->
     <div class="attachments-box">
 
-    </div>
+    </div> <!-- End div containing the attachments feature -->
 </div>
 
+<!-- Div containing table of users assigned to this issue -->
+<h4>Users Assigned to Issue</h4>
 <div>
     <table class="table">
         <thead>
-            <th>User</th>
-            <th></th>
+            <tr>
+                <th>User</th>
+                <th></th>
+            </tr>
         </thead>
         <tbody>
             @foreach (var userForIssue in Model.issue.UserIssues)
             {
-                <td>@userForIssue.AppUser.UserName</td>
+                <!-- <tr><td>@userForIssue.AppUser.UserName</td></tr> -->
+                <tr><td><a asp-controller="AppUsers" asp-action="Details" asp-route-id="@userForIssue.AppUser.Id">@userForIssue.AppUser.UserName</a></td></tr>
             }
         </tbody>
     </table>
-</div>
+</div> <!-- End div containing table of users assigned to this issue -->
 
 <div id="closeIssueFooter">
     @if (issueStatus == "Open")
     {
-        <input type="button" value="Close Issue?" onclick="location.href='@Url.Action("Close", "Issues", new {id = IssueID})'" />
+        <input type="button" class="btn btn-danger justify-content-center" value="Close Issue?" onclick="location.href='@Url.Action("Close", "Issues", new {id = IssueID})'" />
     }
 </div>

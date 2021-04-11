@@ -5,19 +5,32 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<h1 class="justify-content-center">Create New Task</h1>
 
-<h4>ProjectTask</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group"> <!-- Input for Name property begins -->
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
+            </div> <!-- End input for Name property -->
+
+            <div class="form-group"> <!-- Begin input for Summary property -->
+                <label asp-for="Summary" class="control-label"></label>
+                <input asp-for="Summary" class="form-control" />
+                <span asp-validation-for="Summary" class="text-danger"></span>
+            </div> <!-- End input for Summary property -->
+
+            <div class="form-group"> <!-- Begin input for Description property -->
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div> <!-- End input for Description property -->
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -29,7 +42,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Details" asp-controller="Projects" asp-route-id="@ViewBag.projectid">Back to List</a>
 </div>
 
 @section Scripts {

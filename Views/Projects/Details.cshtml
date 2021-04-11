@@ -12,25 +12,30 @@
 @foreach (var item in Model.ProjectTasks)
 {
     <br />
-    
+
+    var widget1Target = "#" + "collapseOne" + item.ID;
+    var widget2Target = "#" + "collapseTwo" + item.ID;
+
+    var widget1ID = "collapseOne" + item.ID;
+    var widget2ID = "collapseTwo" + item.ID;
+
     <div class="card">
         <div class="card-header text-center">
             <h4><a asp-controller="ProjectTasks" asp-action="Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.Name)</a></h4>
         </div>
         <div class="card-body">
             <p class="card-text">
-                Descriptive text associated with each task needs to go here.
+                @item.Summary
             </p>
 
             <div class="card">
                 <div class="card-header" id="headingOne">
-                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" role="button">
-                        Summary
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="@widget1Target" role="button">
+                        Widget #1
                     </button>
                 </div>
-                <div class="collapse" id="collapseOne">
+                <div class="collapse" id="@widget1ID">
                     <div class="card card-body">
-                        Description of the project goes here.
 
                     </div>
                 </div>
@@ -38,11 +43,11 @@
 
             <div class="card">
                 <div class="card-header" id="headingTwo">
-                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTwo" role="button">
-                        Issues
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="@widget2Target" role="button">
+                        Widget #2
                     </button>
                 </div>
-                <div class="collapse" id="collapseTwo">
+                <div class="collapse" id="@widget2ID">
                     <div class="card card-body">
                         <form asp-action="Details" method="get">
                             <div class="form-actions no-color">

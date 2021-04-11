@@ -34,6 +34,7 @@
     <div class="d-flex flex-row">
         <!-- Begin div flex row containing the issue table and its navigation, with one row for each -->
         <div class="d-flex flex-column table-and-navigation" id="right-table">
+            <h5>Issues Assigned to @Model.currentUserName</h5>
             <!-- Begin div containing issues table -->
             <div class="d-flex">
                 <!-- Begin table of assigned issues -->
@@ -119,6 +120,7 @@
 
         <!-- Begin div flex row containing comments table and navigation with one row for each -->
         <div class="d-flex flex-column table-and-navigation" id="left-table">
+            <h5>@Model.currentUserName's Comments</h5>
             <!-- Begin div containing comments table -->
             <div class="d-flex">
                 <!-- Begin table of user's comments on issues -->

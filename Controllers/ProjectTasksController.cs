@@ -86,7 +86,7 @@ namespace BugTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,ProjectID")] ProjectTask projectTask, int projectid)
+        public async Task<IActionResult> Create([Bind("ID,Name,Summary,Description,ProjectID")] ProjectTask projectTask, int projectid)
         {
             if (ModelState.IsValid)
             {
@@ -118,7 +118,7 @@ namespace BugTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name")] ProjectTask projectTask)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Summary,Description,ProjectID")] ProjectTask projectTask)
         {
             if (id != projectTask.ID)
             {
@@ -143,7 +143,8 @@ namespace BugTracker.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                // return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Projects", new { id = projectTask.ProjectID });
             }
             return View(projectTask);
         }
