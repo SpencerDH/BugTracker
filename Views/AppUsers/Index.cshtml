@@ -5,12 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Users List</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<table class="table" id="users-table">
     <thead>
         <tr>
             <th>
@@ -47,3 +44,12 @@
         }
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+        console.log("Running section script");
+        $(document).ready(function () {
+            $("#users-table").DataTable();
+        });
+    </script>
+}

@@ -5,12 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>All Tickets</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<table class="table" id="issues-table">
     <thead>
         <tr>
             <th>
@@ -28,7 +25,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.ProjectTask)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeCreated)
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -50,11 +49,18 @@
                 @Html.DisplayFor(modelItem => item.ProjectTask.ID)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                @Html.DisplayFor(modelItem => item.TimeCreated)
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+        console.log("Running section script");
+        $(document).ready(function () {
+            $("#issues-table").DataTable();
+        });
+    </script>
+} 

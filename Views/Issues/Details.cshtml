@@ -31,10 +31,12 @@
 <h1 style="text-align:center">@Model.issue.Name</h1>
 <br />
 
-<div class="flex-container"> <!-- Begin div containing issue comments table and navigation -->
-    <div class="d-flex justify-content-center" id="issuecomments"> <!-- Begin div for issue comments table -->
+<div class="flex-container">
+    <!-- Begin div containing issue comments table and navigation -->
+    <div class="d-flex justify-content-center" id="issuecomments">
+        <!-- Begin div for issue comments table -->
         <h4>Comments</h4>
-        <table class="table">
+        <table class="table" id="comments-table">
             <thead>
                 <tr>
                     <th>Issue Comment</th>
@@ -45,11 +47,11 @@
             <tbody>
                 @foreach (var comment in Model.issueComments)
                 {
-                <tr>
-                    <td>@comment.Comment</td>
-                    <td>@comment.CreatedDate</td>
-                    <td><a asp-controller="AppUsers" asp-action="Details" asp-route-id="@comment.AppUser.Id">@comment.UserCreated</a></td>
-                </tr>
+                    <tr>
+                        <td>@comment.Comment</td>
+                        <td>@comment.CreatedDate</td>
+                        <td><a asp-controller="AppUsers" asp-action="Details" asp-route-id="@comment.AppUser.Id">@comment.UserCreated</a></td>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -76,10 +78,12 @@
             </div>
         </form>
     </div> <!-- End div containing issue comments table -->
-    <div class="d-flex justify-content-center"> <!-- Begin div containing table navigation -->
+    <div class="d-flex justify-content-center">
+        <!-- Begin div containing table navigation -->
 
     </div> <!-- End div containing table navigation -->
-    <div class="d-flex justify-content-center"> <!-- Begin div containing the submission form -->
+    <div class="d-flex justify-content-center">
+        <!-- Begin div containing the submission form -->
 
     </div>
 
@@ -95,7 +99,7 @@
 <!-- Div containing table of users assigned to this issue -->
 <h4>Users Assigned to Issue</h4>
 <div>
-    <table class="table">
+    <table class="table" id="users-table">
         <thead>
             <tr>
                 <th>User</th>
@@ -118,3 +122,13 @@
         <input type="button" class="btn btn-danger justify-content-center" value="Close Issue?" onclick="location.href='@Url.Action("Close", "Issues", new {id = IssueID})'" />
     }
 </div>
+
+@section Scripts {
+    <script>
+        console.log("Running section script");
+        $(document).ready(function () {
+            $("#comments-table").DataTable();
+            $("#users-table").DataTable();
+        });
+    </script>
+}
