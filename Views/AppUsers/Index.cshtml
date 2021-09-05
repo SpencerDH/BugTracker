@@ -5,6 +5,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" aria-current="page"><a asp-controller="Home" asp-action="Index">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Users</li>
+    </ol>
+</nav>
+
 <h1>Users List</h1>
 
 <table class="table" id="users-table">
@@ -19,7 +26,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.UserName)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -33,12 +39,7 @@
                     @Html.DisplayFor(modelItem => item.LastName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.UserName)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-controller="AppUsers" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.UserName)</a>
                 </td>
             </tr>
         }

@@ -4,6 +4,14 @@
     ViewData["Title"] = "Details";
 }
 
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Projects" asp-action="Index">Projects</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
+    </ol>
+</nav>
+
 <h1 class="text-center">@Html.DisplayFor(model => model.Name)</h1>
 <div class="text-center">
     <a href="@Url.Action("Create", "ProjectTasks", new { projectid = Model.ID })">Create New Task</a>

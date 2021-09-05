@@ -59,11 +59,15 @@ namespace BugTracker.Controllers
                 //
             }
 
+            var projectTaskName = issue.ProjectTask.Name;
+
             var issueComments = from ic in issue.IssueComments
                                 select ic;
 
             IssueAndCommentsViewModel issueCommentsViewModel = new IssueAndCommentsViewModel()
             {
+                ProjectTaskID = issue.ProjectTaskID,
+                ProjectTaskName = projectTaskName,
                 issue = issue,
                 issueComments = new PaginatedList<IssueComment>(issue.IssueComments, commentsPageNumber, pageSize),
                 issueComment = new IssueComment()

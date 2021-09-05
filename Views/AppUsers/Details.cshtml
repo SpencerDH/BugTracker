@@ -27,6 +27,14 @@
     }
 </style>
 
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+        <li class="breadcrumb-item"><a asp-controller="AppUsers" asp-action="Index">Users</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Model.currentUserName</li>
+    </ol>
+</nav>
+
 <h1 class="user-page-header">@Model.currentUserName</h1>
 
 <!-- Begin table of assigned issues -->

@@ -53,6 +53,9 @@ namespace BugTracker.Controllers
             var appUsers = from appUser in projectTask.AppUsers
                            select appUser;
 
+            var currentProject = await _context.Projects
+                .FirstOrDefaultAsync(p => p.ID == projectTask.ProjectID);
+
             if (issuesSearchTerm != null)
             {
                 issues = issues.Where(i => i.Name.Contains(issuesSearchTerm) |
@@ -66,6 +69,8 @@ namespace BugTracker.Controllers
 
             IssueAndUserListsViewModel viewModel = new IssueAndUserListsViewModel()
             {
+                projectName = currentProject.Name,
+                projectID = currentProject.ID,
                 projectTask = projectTask,
                 issuesList = new PaginatedList<Issue>(issues, issuesPageNumber ?? 1, pageSize),
                 usersList = new PaginatedList<AppUser>(appUsers, usersPageNumber ?? 1, pageSize)

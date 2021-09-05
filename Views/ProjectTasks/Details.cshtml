@@ -23,6 +23,15 @@
     }
 </style>
 
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Projects" asp-action="Index">Projects</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Projects" asp-action="Details" asp-route-id="@Model.projectID">@Model.projectName</a></li>
+        <li class="breadcrumb-item active">@Model.projectTask.Name</li>
+    </ol>
+</nav>
+
 <div id="PageWithModal"></div>
 
 <h1>@Model.projectTask.Name</h1>

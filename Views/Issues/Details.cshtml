@@ -28,6 +28,15 @@
     }
 </style>
 
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Projects" asp-action="Index">Projects</a></li>
+        <li class="breadcrumb-item"><a asp-controller="ProjectTasks" asp-action="Details" asp-route-id="@Model.ProjectTaskID">@Model.ProjectTaskName</a></li>
+        <li class="breadcrumb-item active">@Model.issue.Name</li>
+    </ol>
+</nav>
+
 <h1 style="text-align:center">@Model.issue.Name</h1>
 <br />
 
