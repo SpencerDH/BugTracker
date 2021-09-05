@@ -32,7 +32,8 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
         <li class="breadcrumb-item"><a asp-controller="Projects" asp-action="Index">Projects</a></li>
-        <li class="breadcrumb-item"><a asp-controller="ProjectTasks" asp-action="Details" asp-route-id="@Model.ProjectTaskID">@Model.ProjectTaskName</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Projects" asp-action="Details" asp-route-id="@Model.projectID">@Model.projectName</a></li>
+        <li class="breadcrumb-item"><a asp-controller="ProjectTasks" asp-action="Details" asp-route-id="@Model.projectTaskID">@Model.projectTaskName</a></li>
         <li class="breadcrumb-item active">@Model.issue.Name</li>
     </ol>
 </nav>

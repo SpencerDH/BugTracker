@@ -59,15 +59,22 @@ namespace BugTracker.Controllers
                 //
             }
 
+            // Get variables for the viewmodel
             var projectTaskName = issue.ProjectTask.Name;
-
             var issueComments = from ic in issue.IssueComments
                                 select ic;
 
+            var currentProjectID = issue.ProjectTask.ProjectID;
+            var currentProject = await _context.Projects
+                .FirstOrDefaultAsync(p => p.ID == currentProjectID);
+
+            // Create the viewmodel
             IssueAndCommentsViewModel issueCommentsViewModel = new IssueAndCommentsViewModel()
             {
-                ProjectTaskID = issue.ProjectTaskID,
-                ProjectTaskName = projectTaskName,
+                projectName = currentProject.Name,
+                projectID = currentProjectID,
+                projectTaskID = issue.ProjectTaskID,
+                projectTaskName = projectTaskName,
                 issue = issue,
                 issueComments = new PaginatedList<IssueComment>(issue.IssueComments, commentsPageNumber, pageSize),
                 issueComment = new IssueComment()
