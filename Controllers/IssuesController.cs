@@ -299,6 +299,24 @@ namespace BugTracker.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // GET: Assign user to issue
+        public async Task<IActionResult> AssignUserToIssue(int IssueID)
+        {
+            // Create ViewModel for the GET user-to-issue assignment
+            var userNamesList = await _context.AppUsers
+                .Select(au => au.UserName)
+                .ToListAsync();
+
+            AssignUserToIssueGETViewModel viewModel = new AssignUserToIssueGETViewModel
+            {
+                IssueID = IssueID,
+                AppUserNameList = userNamesList
+            };
+
+            // Return the ViewModel to the partial view for assigning user to issue
+            return PartialView("~/Views/Issues/_AssignUserToIssuePartial.cshtml", viewModel);
+        }
+
         private bool IssueExists(int id)
         {
             return _context.Issues.Any(e => e.ID == id);

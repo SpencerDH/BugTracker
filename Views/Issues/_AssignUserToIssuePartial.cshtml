@@ -1,0 +1,30 @@
+﻿@model BugTracker.ViewModels.AssignUserToIssueGETViewModel
+
+<div class="modal fade" id="assignUserToIssue">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!--  Modal header -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="createIssueLabel">Assign User to Issue</h4>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>x</span>
+                </button>
+            </div>
+
+            <!--  Modal body, with Create form from the Issues controller -->
+            <div class="modal-body">
+                <p>Test dropdown list of all usernames.</p>
+                <label for="username-dropdown">Choose a user:</label>
+                <select name="username-dropdown">
+                    @foreach (var item in Model.AppUserNameList)
+                    {
+                        <option value="@item">@item</option>
+                    }
+                </select>
+                <br />
+                <div id="user-to-issue-assignment-issue-id" hidden>@Model.IssueID</div>
+                <button type="button" class="btn btn-primary" id="user-to-issue-assignment-button">Assign User</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -57,7 +57,7 @@
 
 })(jQuery); // End of use strict
 
-// JQuery to open modular pages
+// jQuery to open modular pages
 $(function () {
     var PageWithModal = $("#PageWithModal");
     $("button[data-toggle='ajax-modal']").click(function (event) {
@@ -66,5 +66,14 @@ $(function () {
             PageWithModal.html(data);
             PageWithModal.find(".modal").modal("show");
         })
+    })
+})
+
+// jQuery to pass user-to-issue assignment ViewModel to issues controller
+$(function () {
+    $("button#user-to-issue-assignment-button").click(function (event) {
+        console.log("Button was pressed");
+        var issueID = $("div#user-to-issue-assignment-issue-id");
+        console.log(issueID);
     })
 })

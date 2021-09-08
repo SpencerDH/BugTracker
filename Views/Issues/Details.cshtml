@@ -7,27 +7,7 @@
     var issueStatus = Model.issue.Status;
 }
 
-<style>
-    h4 {
-        text-align: center;
-    }
-
-    div.attachments-box {
-        border: solid gray;
-        margin: 20px;
-        width: 320px;
-    }
-
-    div.flex-container {
-        display: flex;
-        flex-direction: row;
-    }
-
-    #closeIssueFooter {
-        width: 100%;
-    }
-</style>
-
+<!-- Breadcrumb navigation -->
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
@@ -38,104 +18,109 @@
     </ol>
 </nav>
 
+<!-- Testing modal window -->
+<div id="PageWithModal"></div>
+
+<!-- Header for page -->
 <h1 style="text-align:center">@Model.issue.Name</h1>
 <br />
 
-<div class="flex-container">
-    <!-- Begin div containing issue comments table and navigation -->
-    <div class="d-flex justify-content-center" id="issuecomments">
-        <!-- Begin div for issue comments table -->
-        <h4>Comments</h4>
-        <table class="table" id="comments-table">
-            <thead>
-                <tr>
-                    <th>Issue Comment</th>
-                    <th>Date Created</th>
-                    <th>Created By</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var comment in Model.issueComments)
-                {
+<div class="container-fluid">
+    <div class="row">
+        <!-- Comments table and submission form -->
+        <div class="col-6 col-1">
+            <h2 style="text-align: center;">Ticket Comments</h2>
+            <br />
+            <table class="table" id="comments-table">
+                <thead>
                     <tr>
-                        <td>@comment.Comment</td>
-                        <td>@comment.CreatedDate</td>
-                        <td><a asp-controller="AppUsers" asp-action="Details" asp-route-id="@comment.AppUser.Id">@comment.UserCreated</a></td>
+                        <th>Comment</th>
+                        <th>Date Created</th>
+                        <th>Created By</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-        <form asp-action="Details" method="post" asp-route-id="@Model.issue.ID">
-            <div class="form-group">
-                <textarea asp-for="issueComment.Comment" class="form-control" id="issueCommentTextBox" rows="3" placeholder="What are your thoughts?"></textarea>
-                <br />
+                </thead>
+                <tbody>
+                    @foreach (var comment in Model.issueComments)
+                    {
+                        <tr>
+                            <td>@comment.Comment</td>
+                            <td>@comment.CreatedDate</td>
+                            <td><a asp-controller="AppUsers" asp-action="Details" asp-route-id="@comment.AppUser.Id">@comment.UserCreated</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <br />
+            <form asp-action="Details" method="post" asp-route-id="@Model.issue.ID">
+                <div class="form-group">
+                    <textarea asp-for="issueComment.Comment" class="form-control" id="issueCommentTextBox" rows="3" placeholder="What are your thoughts?"></textarea>
+                    <br />
 
-                @if (issueStatus == "Open")
-                {
-                    <input type="submit" value="Submit" class="btn btn-primary justify-content-center" />
-                }
-                else
-                {
-                    <input type="submit" value="Comments Cannot Be Submitted" class="btn btn-secondary justify-content-center" />
-                }
+                    <div style="text-align: center;">
+                        @if (issueStatus == "Open")
+                        {
+                            <input type="submit" value="Submit" class="btn btn-primary" />
+                        }
+                        else
+                        {
+                            <input type="submit" value="Comments Cannot Be Submitted" class="btn btn-secondary justify-content-center" />
+                        }
+                    </div>
 
-                <div>
-                    <input asp-for="issueComment.UserCreated" id="UserCreated" value="@User.Identity.Name" />
+                  
+                    <div>
+                        <input asp-for="issueComment.UserCreated" id="UserCreated" value="@User.Identity.Name" />
+                    </div>
+                    <div>
+                        <input asp-for="issueComment.IssueID" id="IssueID" value="@IssueID" />
+                    </div>
                 </div>
-                <div>
-                    <input asp-for="issueComment.IssueID" id="IssueID" value="@IssueID" />
-                </div>
+            </form>
+        </div>
+        <!-- Table of users assigned to issue -->
+        <div class="col-6 col-1">
+            <h2 style="text-align: center;">Assigned Users</h2>
+            <br />
+            <table class="table" id="users-table">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var userForIssue in Model.issue.UserIssues)
+                    {
+                        <!-- <tr><td>@userForIssue.AppUser.UserName</td></tr> -->
+                        <tr><td><a asp-controller="AppUsers" asp-action="Details" asp-route-id="@userForIssue.AppUser.Id">@userForIssue.AppUser.UserName</a></td></tr>
+                    }
+                </tbody>
+            </table>
+            <br />
+            <!-- Button to assign user to ticket -->
+            <div class="col text-center">
+                <button class="btn btn-primary" data-toggle="ajax-modal" data-target="#assignUserToIssue"
+                        data-url="@Url.Action("AssignUserToIssue", "Issues", new { IssueID = Model.issue.ID })">Assign User to Ticket</button>
             </div>
-        </form>
-    </div> <!-- End div containing issue comments table -->
-    <div class="d-flex justify-content-center">
-        <!-- Begin div containing table navigation -->
-
-    </div> <!-- End div containing table navigation -->
-    <div class="d-flex justify-content-center">
-        <!-- Begin div containing the submission form -->
-
+            
+        </div>
     </div>
-
-
-
-
-    <!-- Div containing the attachments feature -->
-    <div class="attachments-box">
-
-    </div> <!-- End div containing the attachments feature -->
-</div>
-
-<!-- Div containing table of users assigned to this issue -->
-<h4>Users Assigned to Issue</h4>
-<div>
-    <table class="table" id="users-table">
-        <thead>
-            <tr>
-                <th>User</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var userForIssue in Model.issue.UserIssues)
+    <div class="row">
+        <div class="col text-center">
+            @if (issueStatus == "Open")
             {
-                <!-- <tr><td>@userForIssue.AppUser.UserName</td></tr> -->
-                <tr><td><a asp-controller="AppUsers" asp-action="Details" asp-route-id="@userForIssue.AppUser.Id">@userForIssue.AppUser.UserName</a></td></tr>
+                <input type="button" class="btn btn-danger justify-content-center" style="width: 150px;" value="Close Ticket?" onclick="location.href='@Url.Action("Close", "Issues", new {id = IssueID})'" />
             }
-        </tbody>
-    </table>
-</div> <!-- End div containing table of users assigned to this issue -->
-
-<div id="closeIssueFooter">
-    @if (issueStatus == "Open")
-    {
-        <input type="button" class="btn btn-danger justify-content-center" value="Close Issue?" onclick="location.href='@Url.Action("Close", "Issues", new {id = IssueID})'" />
-    }
+        </div>
+    </div>
 </div>
+
+
+
+
 
 @section Scripts {
     <script>
-        console.log("Running section script");
         $(document).ready(function () {
             $("#comments-table").DataTable();
             $("#users-table").DataTable();
