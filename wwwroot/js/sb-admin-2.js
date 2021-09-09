@@ -65,15 +65,29 @@ $(function () {
         $.get(url).done(function (data) {
             PageWithModal.html(data);
             PageWithModal.find(".modal").modal("show");
-        })
-    })
-})
+        });
+    });
+});
 
 // jQuery to pass user-to-issue assignment ViewModel to issues controller
-$(function () {
-    $("button#user-to-issue-assignment-button").click(function (event) {
-        console.log("Button was pressed");
-        var issueID = $("div#user-to-issue-assignment-issue-id");
-        console.log(issueID);
-    })
-})
+$(document).ready(function () {
+    $("div#PageWithModal").on("click", "button#user-to-issue-assignment-button", function () {
+        // Extract variables
+        var issueID = $("div#user-to-issue-assignment-issue-id").text();
+        var username = $("select#issue-assignment-username-list").val();
+
+        // Put variables into object
+        var userIssueAssignment = new Object();
+        userIssueAssignment.IssueID = issueID;
+        userIssueAssignment.AppUserName = username;
+
+        console.log(userIssueAssignment);
+
+        /*
+        $.ajax({
+            type: "POST",
+            url: "/Issues/AssignUserToIssue"
+        })
+        */
+    });
+});
