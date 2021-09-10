@@ -317,6 +317,38 @@ namespace BugTracker.Controllers
             return PartialView("~/Views/Issues/_AssignUserToIssuePartial.cshtml", viewModel);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AssignUserToIssue(AssignUserToIssuePOSTViewModel viewModel)
+        {
+            // Normalized username
+            string normalizedUserName = viewModel.AppUserName.ToUpper().Normalize();
+
+            // Get the user to whom the issue should be assigned
+            var userToAssign = await _userManager
+                .FindByNameAsync(normalizedUserName);
+
+            // Get issue corresponding to the ID
+            var issue = await _context
+                .Issues
+                .Include(i => i.UserIssues)
+                .FirstOrDefaultAsync(i => i.ID == viewModel.IssueID);
+
+            // Initialize userIssue
+            var userIssue = new UserIssue
+            {
+                IssueID = issue.ID,
+                AppUserID = userToAssign.Id
+            };
+
+            // Add the user issue
+            issue.UserIssues.Add(userIssue);
+            _context.Update(issue);
+
+            await _context.SaveChangesAsync();
+
+            return View(issue);
+        }
+
         private bool IssueExists(int id)
         {
             return _context.Issues.Any(e => e.ID == id);

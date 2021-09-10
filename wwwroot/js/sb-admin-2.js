@@ -81,13 +81,19 @@ $(document).ready(function () {
         userIssueAssignment.IssueID = issueID;
         userIssueAssignment.AppUserName = username;
 
-        console.log(userIssueAssignment);
-
-        /*
+        // Submitting user assignment to controller through AJAX
         $.ajax({
             type: "POST",
-            url: "/Issues/AssignUserToIssue"
-        })
-        */
+            url: "/Issues/AssignUserToIssue",
+            dataType: "json",
+            data: userIssueAssignment,
+            success: function () {
+                console.log("Success");
+            },
+            error: function () {
+                console.log("Error has occurred");
+            }
+        });
+
     });
 });
