@@ -318,7 +318,7 @@ namespace BugTracker.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AssignUserToIssue(AssignUserToIssuePOSTViewModel viewModel)
+        public async Task<JsonResult> AssignUserToIssue(AssignUserToIssuePOSTViewModel viewModel)
         {
             // Normalized username
             string normalizedUserName = viewModel.AppUserName.ToUpper().Normalize();
@@ -346,7 +346,8 @@ namespace BugTracker.Controllers
 
             await _context.SaveChangesAsync();
 
-            return View(issue);
+            // Return JSON object
+            return Json(new { msg = "success" });
         }
 
         private bool IssueExists(int id)

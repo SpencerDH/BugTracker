@@ -87,8 +87,9 @@ $(document).ready(function () {
             url: "/Issues/AssignUserToIssue",
             dataType: "json",
             data: userIssueAssignment,
-            success: function () {
-                console.log("Success");
+            success: function (msg) {
+                console.log(msg);
+                location.reload()
             },
             error: function () {
                 console.log("Error has occurred");
