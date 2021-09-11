@@ -2,24 +2,60 @@
     ViewData["Title"] = "Login";
 }
 
-@{ 
+@{
     Layout = "_AuthLayout.cshtml";
 }
 
+@model BugTracker.ViewModels.LoginViewModel;
+
+<div id="login-settings" style="display: none;">@Model.LoginSettings</div>
+
+<!-- Login form -->
 @using (Html.BeginForm("Login", "Account", FormMethod.Post))
 {
-    <table>
-        <tr>
-            <td>Enter Username:</td>
-            <td>@Html.TextBox("Username")</td>
-        </tr>
-        <tr>
-            <td>Enter Password:</td>
-            <td>@Html.Password("Password")</td>
-        </tr>
-        <tr>
-            <!-- <td colspan="2"><input class="btn btn-primary" type="submit" value="Submit" /></td> -->
-        </tr>
-    </table>
+    <div class="input-group">
+        <label>Username: </label>
+        @Html.TextBox("Username")
+        <div id="username-not-exist-error-message" class="error-message" style="display: none;">
+            This username does not exist.
+        </div>
+        <div id="missing-username-error-message" class="error-message" style="display: none;">
+            Username is a required field.
+        </div>
+    </div>
+
+    <div class="input-group error">
+        <label>Password: </label>
+        @Html.Password("Password")
+        <div id="incorrect-password-error-message" class="error-message" style="display: none;">
+            Incorrect password.
+        </div>
+        <div id="missing-password-error-message" class="error-message" style="display: none;">
+            Password is a required field.
+        </div>
+    </div>
+
+    <br />
+
     <input class="btn btn-primary justify-content-center" type="submit" value="Submit" />
+}
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var settings = $("#login-settings").text();
+            if (settings == "user-does-not-exist") {
+                console.log("User doesn't exist");
+                $("#username-not-exist-error-message").css({ "display": "" });
+            } else if (settings == "password-incorrect") {
+                console.log("Password is incorrect");
+                $("#incorrect-password-error-message").css({ "display": "" });
+            } else if (settings == "missing-username") {
+                $("#missing-username-error-message").css({ "display": "" });
+            } else if (settings == "missing-password") {
+                $("#missing-password-error-message").css({ "display": "" });
+            }
+        })
+    </script>
 }

@@ -7,6 +7,7 @@ using BugTracker.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using BugTracker.Data;
+using BugTracker.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace BugTracker.Controllers
@@ -24,25 +25,69 @@ namespace BugTracker.Controllers
             SignInMgr = signInManager;
         }
 
-        public async Task<IActionResult> Login()
+        public ActionResult Login(LoginViewModel? viewModel)
         {
-            return View();
+            // Check if viewmodel exists
+            if (viewModel == null)
+            {
+                LoginViewModel replacementViewModel = new LoginViewModel
+                {
+                    LoginSettings = "default"
+                };
+
+                return View(replacementViewModel);
+            }
+
+            return View(viewModel);
         }
 
         [HttpPost]
         public async Task<IActionResult> Login(IFormCollection fc)
         {
+            // Define settings variable
+            LoginViewModel viewModel = new LoginViewModel();
+
             // Load in the username and password passed to the form in Login.cshtml
             string userName = fc["Username"];
             string password = fc["Password"];
+
+            // Handle case where username is empty
+            if (userName.Length == 0)
+            {
+                viewModel.LoginSettings = "missing-username";
+                return View(viewModel);
+            }
+
+            // Handle case wehre password is empty
+            if (password.Length == 0)
+            {
+                viewModel.LoginSettings = "missing-password";
+                return View(viewModel);
+            }
 
             // Get the user with the username passed to the form
             var user = await _context.AppUsers
                 .FirstOrDefaultAsync(au => au.UserName == userName);
 
-            var result = await SignInMgr.PasswordSignInAsync(user, password, false, false);
+            // Handle case where user is null
+            if (user == null)
+            {
+                viewModel.LoginSettings = "user-does-not-exist";
+                return View(viewModel);
+            }
+
+            // Check if password is correct
             var passwordCheck = await UserMgr.CheckPasswordAsync(user, password);
 
+            if (passwordCheck == false)
+            {
+                viewModel.LoginSettings = "password-incorrect";
+                return View(viewModel);
+            }
+
+            // Actually sign in the user
+            var result = await SignInMgr.PasswordSignInAsync(user, password, false, false);
+            
             if (result.Succeeded)
             {
                 return RedirectToAction("Index", "Home");
@@ -52,7 +97,10 @@ namespace BugTracker.Controllers
                 ViewBag.Result = "result is: " + result.ToString();
             }
 
-            return View();
+            // If something has gone wrong that's unaccounted for, return to the default login page
+            viewModel.LoginSettings = "default";
+
+            return View(viewModel);
         }
 
         public async Task<IActionResult> Register()

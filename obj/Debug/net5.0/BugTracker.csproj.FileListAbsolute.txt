@@ -219,3 +219,4 @@ C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\Projects\Component
 C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\Issues\_CreateIssuePartial.cshtml.g.cs
 C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\Issues\UserIssuesIndex.cshtml.g.cs
 C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\Issues\_AssignUserToIssuePartial.cshtml.g.cs
+C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\Account\_SignInErrorPartial.cshtml.g.cs
