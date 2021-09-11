@@ -42,10 +42,7 @@ namespace BugTracker.Controllers
 
             var result = await SignInMgr.PasswordSignInAsync(user, password, false, false);
             var passwordCheck = await UserMgr.CheckPasswordAsync(user, password);
-            Console.WriteLine("Debugging outputs");
-            Console.WriteLine("userName = " + userName);
-            Console.WriteLine("password = " + password);
-            Console.WriteLine("result = " + result.Succeeded);
+
             if (result.Succeeded)
             {
                 return RedirectToAction("Index", "Home");
@@ -96,6 +93,13 @@ namespace BugTracker.Controllers
             Console.WriteLine(IdentityResult.Success);
 
             return View();
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await SignInMgr.SignOutAsync();
+
+            return RedirectToAction("Login");
         }
     }
 }
