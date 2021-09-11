@@ -8,14 +8,127 @@
     </ol>
 </nav>
 
-<div class="text-center">
-    <h1 class="display-4">Dashboard</h1>
+<!-- Cards section -->
+
+<div class="updates-cards row my-4">
+    <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+        <div class="card">
+            <h5 class="card-header">Scrum Update</h5>
+            <div class="card-body">
+                <p class="card-text">Sprint #4 completed; customer review in progress.</p>
+                <p class="card-text text-success">July 17th, 2021</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+        <div class="card">
+            <h5 class="card-header">Scrum Update</h5>
+            <div class="card-body">
+                <p class="card-text">Sprint #4 completed; customer review in progress.</p>
+                <p class="card-text text-success">July 17th, 2021</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+        <div class="card">
+            <h5 class="card-header">Scrum Update</h5>
+            <div class="card-body">
+                <p class="card-text">Sprint #4 completed; customer review in progress.</p>
+                <p class="card-text text-success">July 17th, 2021</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+        <div class="card">
+            <h5 class="card-header">Scrum Update</h5>
+            <div class="card-body">
+                <p class="card-text">Sprint #4 completed; customer review in progress.</p>
+                <p class="card-text text-success">July 17th, 2021</p>
+            </div>
+        </div>
+    </div>
 </div>
 
-@*
-        <div class="text-center">
-        <h1 class="display-4">Welcome</h1>
-        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- Chart and Table Section -->
+<div class="container">
+    <div class="row">
+        <!-- Column for table -->
+        <div class="col-6">
+            <table id="dummyTable">
+                <thead>
+                    <tr>
+                        <th>Sprint</th>
+                        <th>Ticket</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#2</td>
+                        <td>Fix git branch reference</td>
+                        <td>11/30/2021</td>
+                    </tr>
+                    <tr>
+                        <td>#3</td>
+                        <td>Undefined error handling in login page</td>
+                        <td>9/11/2021</td>
+                    </tr>
+                    <tr>
+                        <td>#2</td>
+                        <td>Technical report review</td>
+                        <td>9/18/2021</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- Column for chart -->
+        <div class="col-6">
+            <canvas height="300" width="240" id="dummyChart"></canvas>
+        </div>
     </div>
-*@
+</div>
 
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#dummyTable").DataTable();
+        })
+    </script>
+
+    <script>
+        // Setting up the chart data
+        const labels = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+        ];
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: '% Sales By Quarter',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: [0, 10, 5, 2, 20, 30, 45],
+            }]
+        };
+
+        // Defining the chart
+        const config = {
+            type: 'line',
+            data: data,
+            options: {}
+        };
+
+        // Displaying the chart
+        var dummyChart = new Chart(
+            $("#dummyChart"),
+            config
+        )
+    </script>
+}
