@@ -28,14 +28,8 @@ namespace BugTracker.Controllers
 
         // GET: ProjectTasks/Details/5
         public async Task<IActionResult> Details(
-            int? id,
-            int? usersPageNumber,
-            int? issuesPageNumber,
-            string? issuesSearchTerm)
+            int? id)
         {
-            // Set page size for both paginated lists
-            int pageSize = 5;
-
             // Get out
             if (id == null)
             {
@@ -56,12 +50,6 @@ namespace BugTracker.Controllers
             var currentProject = await _context.Projects
                 .FirstOrDefaultAsync(p => p.ID == projectTask.ProjectID);
 
-            if (issuesSearchTerm != null)
-            {
-                issues = issues.Where(i => i.Name.Contains(issuesSearchTerm) |
-                                    i.Description.Contains(issuesSearchTerm));
-            }
-
             if (projectTask == null)
             {
                 return NotFound();
@@ -72,8 +60,8 @@ namespace BugTracker.Controllers
                 projectName = currentProject.Name,
                 projectID = currentProject.ID,
                 projectTask = projectTask,
-                issuesList = new PaginatedList<Issue>(issues, issuesPageNumber ?? 1, pageSize),
-                usersList = new PaginatedList<AppUser>(appUsers, usersPageNumber ?? 1, pageSize)
+                issuesList = issues,
+                usersList = appUsers
             };
 
             return View(viewModel);

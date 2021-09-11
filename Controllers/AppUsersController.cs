@@ -36,11 +36,8 @@ namespace BugTracker.Controllers
         }
 
         // GET: AppUsers/Details/5
-        public async Task<IActionResult> Details(int? id, int? commentsPageNumber, int? issuesPageNumber)
+        public async Task<IActionResult> Details(int? id)
         {
-            // Create fixed page size
-            int pageSize = 5;
-
             /*
             // Select the user based on the id with userManager; return an error if user doesn't exist
             var user = await _context.AppUsers
@@ -80,10 +77,8 @@ namespace BugTracker.Controllers
             // Create view model
             UserDetailsViewModel viewModel = new UserDetailsViewModel
             {
-                IssueComments = new PaginatedList<IssueComment>(issueComments, commentsPageNumber ?? 1, pageSize),
-                Issues = new PaginatedList<Issue>(assignedIssues, issuesPageNumber ?? 1, pageSize),
-                commentsPageNumber = commentsPageNumber ?? 1,
-                issuesPageNumber = issuesPageNumber ?? 1,
+                IssueComments = issueComments,
+                Issues = assignedIssues,
                 currentUserName = currentUserName
             };
 

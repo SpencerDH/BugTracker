@@ -11,7 +11,7 @@ namespace BugTracker.ViewModels
         public string projectName { get; set; }
         public int projectID { get; set; }
         public ProjectTask projectTask { get; set; }
-        public PaginatedList<Issue> issuesList { get; set; }
-        public PaginatedList<AppUser> usersList { get; set; }
+        public IEnumerable<Issue> issuesList { get; set; }
+        public IEnumerable<AppUser> usersList { get; set; }
     }
 }

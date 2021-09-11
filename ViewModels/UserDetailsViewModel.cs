@@ -8,10 +8,8 @@ namespace BugTracker.ViewModels
 {
     public class UserDetailsViewModel
     {
-        public PaginatedList<Issue> Issues { get; set; }
-        public PaginatedList<IssueComment> IssueComments { get; set; }
-        public int commentsPageNumber { get; set; }
-        public int issuesPageNumber { get; set; }
+        public IEnumerable<Issue> Issues { get; set; }
+        public IEnumerable<IssueComment> IssueComments { get; set; }
         public string currentUserName { get; set; }
     }
 }

@@ -4,12 +4,6 @@
     // Layout data
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
-    // Page navigation
-    var issuesPreviousPage = Model.Issues.pageNumber - 1;
-    var issuesNextPage = Model.Issues.pageNumber + 1;
-    var commentsPreviousPage = Model.IssueComments.pageNumber - 1;
-    var commentsNextPage = Model.IssueComments.pageNumber + 1;
 }
 
 <style>
@@ -55,6 +49,9 @@
         }
     </tbody>
 </table> <!-- End table of assigned issues -->
+
+<br />
+<br />
 
 <!-- Begin table of user's comments on issues -->
 <table class="table" id="user-comments-table">
