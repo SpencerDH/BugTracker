@@ -66,13 +66,13 @@ namespace BugTracker.Migrations
                         new
                         {
                             Id = 4,
-                            ConcurrencyStamp = "0fe25b39-bbe4-4652-9ef7-36a8ae58328a",
+                            ConcurrencyStamp = "d60a05d1-ab90-467a-91f9-e6c57e470015",
                             Name = "Administrator"
                         },
                         new
                         {
                             Id = 5,
-                            ConcurrencyStamp = "ec3471be-702d-4dd4-8fe7-93ff43579ec9",
+                            ConcurrencyStamp = "d571873b-ad65-484c-a4b8-d153a11ba0fc",
                             Name = "StandardUser"
                         });
                 });
@@ -154,12 +154,12 @@ namespace BugTracker.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a0cf2361-5e69-4ed5-b0d6-4e856de94c43",
+                            ConcurrencyStamp = "e4f65223-ca7f-4a88-bfaa-19cc28bfd2f7",
                             EmailConfirmed = false,
                             FirstName = "Josh",
                             LastName = "Maddox",
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEIs7mqNSWzOCZw8OJApWmo6PJsLaqsXz1C1EnnrODUPrXfXfQ8xRZqVKOLKDQAogbQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMSrNTXeu/hiB0+9oPl1iHNLSyXqgjqBnseTfxZeXsvMyMM648LwKIX2tXQrp+WKvQ==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
                             UserName = "JoshFM"
@@ -168,12 +168,12 @@ namespace BugTracker.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6addfbe3-b955-4fb6-a0f0-aba5d989b809",
+                            ConcurrencyStamp = "79acc973-b0f0-42ee-9c71-c1bb57e020eb",
                             EmailConfirmed = false,
                             FirstName = "Lauren",
                             LastName = "Ackleh",
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEOZLRnQwLz0slzM1ePcKsSLDt5ObEMDv0aR5hNZRtx0R4qZes+kY2WauNykDD6apug==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGb+4FjRr7QkU3Pw8PdiZYzibwuSdbUc1+yRyPnvLwTAUCgMBXWXjQbDn6b6rmfKQw==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
                             UserName = "LaurenGA"
@@ -182,12 +182,12 @@ namespace BugTracker.Migrations
                         {
                             Id = 3,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d629ede4-697a-42d9-b4de-f75c8eba08fc",
+                            ConcurrencyStamp = "22613171-6468-4d4c-a665-4de3179b923c",
                             EmailConfirmed = false,
                             FirstName = "Spencer",
                             LastName = "Hall",
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEBObgwXjMuwDhVBchrjNDpDdyFcCq2Y8veseELBSMiOKk9Wv3HL9wAqXWgh+rA3TRA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHXUursDPxUlWrZxiYiPGzi2hgTEhcdJi4VeS7/mQ7hWRGUxjLoToGMeSJqh3ttOng==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
                             UserName = "SpencerDH"

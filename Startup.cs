@@ -39,7 +39,7 @@ namespace BugTracker
                 .AddEntityFrameworkStores<RaidContext>();
 
             services.AddDbContext<RaidContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("BugTrackerDbConnection")));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
