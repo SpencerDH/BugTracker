@@ -12,11 +12,9 @@ namespace BugTracker.Models
         [Display(Name = "Ticket Number")]
         public int ID { get; set; }
 
-        [Required]
         [StringLength(60)]
         public string Name { get; set; }
 
-        [Required]
         [StringLength(200)]
         public string Description { get; set; }
 
@@ -31,6 +29,7 @@ namespace BugTracker.Models
         public DateTime TimeCreated { get; set; }
 
         // Navigation properties
+        [Display(Name = "Task")]
         public ProjectTask ProjectTask { get; set; }
         public int ProjectTaskID { get; set; }
         public ICollection<IssueComment> IssueComments { get; set; }

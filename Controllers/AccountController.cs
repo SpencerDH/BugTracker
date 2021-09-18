@@ -103,9 +103,19 @@ namespace BugTracker.Controllers
             return View(viewModel);
         }
 
-        public async Task<IActionResult> Register()
+        public async Task<IActionResult> Register(RegisterViewModel? viewModel)
         {
-            return View();
+            if (viewModel == null)
+            {
+                RegisterViewModel replacementViewModel = new RegisterViewModel
+                {
+                    RegistrationSettings = "default"
+                };
+
+                return View(replacementViewModel);
+            }
+
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -114,8 +124,45 @@ namespace BugTracker.Controllers
             // Assign username and password variables
             string userName = fc["Username"];
             string password = fc["Password"];
+            string confirmPassword = fc["ConfirmPassword"];
             string firstName = fc["FirstName"];
             string lastName = fc["LastName"];
+
+            // Test if username is empty
+            if (userName.Length == 0)
+            {
+                RegisterViewModel viewModel = new RegisterViewModel
+                {
+                    RegistrationSettings = "error-message-missing-username"
+                };
+
+                return View(viewModel);
+            }
+
+            // Test if first name is empty
+            if (firstName.Length == 0)
+            {
+                RegisterViewModel viewModel = new RegisterViewModel
+                {
+                    RegistrationSettings = "error-message-missing-first-name"
+                };
+
+                return View(viewModel);
+            }
+
+            // Test if last name is empty
+            if (lastName.Length == 0)
+            {
+                RegisterViewModel viewModel = new RegisterViewModel
+                {
+                    RegistrationSettings = "error-message-missing-last-name"
+                };
+
+                return View(viewModel);
+            }
+
+            // Get unique characters in password
+            string unqPassChars = new String(password.Distinct().ToArray());
 
             // Test to make sure the username isn't already in use
             var user = await UserMgr.FindByNameAsync(userName);
@@ -123,9 +170,34 @@ namespace BugTracker.Controllers
             // If username is already in use, redirect
             if (user != null)
             {
-                // Need to throw some kind of error message here
-                // Currently it just returns the user to the register page like nothing happened
-                return RedirectToAction(nameof(Register));
+                RegisterViewModel viewModel = new RegisterViewModel
+                {
+                    RegistrationSettings = "error-message-duplicate-username"
+                };
+
+                return View(viewModel);
+            }
+
+            // Test to make sure the password is >= 8 characters and has at least 3 unique characters
+            if (password.Length < 8 || unqPassChars.Length < 3)
+            {
+                RegisterViewModel viewModel = new RegisterViewModel
+                {
+                    RegistrationSettings = "error-message-password-wrong"
+                };
+
+                return View(viewModel);
+            }
+
+            // Test to make sure the password fields match
+            if (password != confirmPassword)
+            {
+                RegisterViewModel viewModel = new RegisterViewModel
+                {
+                    RegistrationSettings = "error-message-password-not-match"
+                };
+
+                return View(viewModel);
             }
 
             // Create the user with the information passed in
@@ -140,7 +212,26 @@ namespace BugTracker.Controllers
             Console.WriteLine("User registration results");
             Console.WriteLine(IdentityResult.Success);
 
-            return View();
+            // Actually sign in the user
+            var signInResult = await SignInMgr.PasswordSignInAsync(user, password, false, false);
+
+            if (signInResult.Succeeded)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ViewBag.Result = "result is: " + result.ToString();
+            }
+
+            // Handle case where unknown error occurs
+            RegisterViewModel replacementViewModel = new RegisterViewModel
+            {
+                RegistrationSettings = "unknown"
+            };
+
+            return View(replacementViewModel);
+
         }
 
         public async Task<IActionResult> Logout()

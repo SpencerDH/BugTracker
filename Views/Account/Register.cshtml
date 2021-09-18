@@ -2,31 +2,94 @@
     ViewData["Title"] = "Register";
 }
 
-@{ 
+@{
     Layout = "_AuthLayout.cshtml";
 }
 
+@model BugTracker.ViewModels.RegisterViewModel;
+
+<div id="register-settings" style="display: none;">@Model.RegistrationSettings</div>
+
 @using (Html.BeginForm("Register", "Account", FormMethod.Post))
 {
-    <table>
-        <tr>
-            <td>Enter First Name:</td>
-            <td>@Html.TextBox("FirstName")</td>
-        </tr>
-        <tr>
-            <td>Enter Last Name:</td>
-            <td>@Html.TextBox("LastName")</td>
-        </tr>
-        <tr>
-            <td>Enter Username:</td>
-            <td>@Html.TextBox("Username")</td>
-        </tr>
-        <tr>
-            <td>Enter Password:</td>
-            <td>@Html.Password("Password")</td>
-        </tr>
-        <tr>
-            <td colspan="2"><input type="submit" class="btn btn-primary" value="Submit" /></td>
-        </tr>
-    </table>
+    <div class="input-group">
+        <label>First Name: </label>
+        @Html.TextBox("FirstName")
+        <div id="error-message-missing-first-name" class="error-message" style="display: none;">
+            First name is required.
+        </div>
+    </div>
+
+    <div class="input-group">
+        <label>Last Name: </label>
+        @Html.TextBox("LastName")
+        <div id="error-message-missing-last-name" class="error-message" style="display: none;">
+            Last name is required.
+        </div>
+    </div>
+
+    <div class="input-group">
+        <label>Username: </label>
+        @Html.TextBox("UserName")
+        <div id="error-message-missing-username" class="error-message" style="display: none;">
+            Username is required.
+        </div>
+        <div id="error-message-duplicate-username" class="error-message" style="display: none;">
+            Username is already in use.
+        </div>
+    </div>
+
+    <div class="input-group">
+        <label>Password: </label>
+        @Html.Password("Password")
+        <div id="password-requirements" class="error-message" style="display: none;">
+            Passwords must have at least 8 characters, at least 3 of which must be unique.
+        </div>
+        <div id="error-message-password-wrong" class="error-message" style="display: none;">
+            Password must be at least 8 characters long and have at least 3 unique characters.
+        </div>
+        <div id="error-message-password-not-match" class="error-message" style="display: none;">
+            Both password fields must match.
+        </div>
+    </div>
+
+    <div class="input-group">
+        <label>Confirm Password: </label>
+        @Html.Password("ConfirmPassword")
+    </div>
+
+    <br />
+
+    <input class="btn btn-primary justify-content-center" type="submit" value="Submit" />
 }
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Display password requirements
+            $("#Password").focus(function () {
+                $("#password-requirements").css({ "display": "" });
+            })
+
+            $("#Password").blur(function () {
+                $("#password-requirements").css({ "display": "none" });
+            })
+
+            // Handle various registration errors
+            var settings = $("#register-settings").text();
+            if (settings == "error-message-password-wrong") {
+                $("#error-message-password-wrong").css({ "display": "" });
+            } else if (settings == "error-message-duplicate-username") {
+                $("#error-message-duplicate-username").css({ "display": "" });
+            } else if (settings == "error-message-missing-username") {
+                $("#error-message-missing-username").css({ "display": "" });
+            } else if (settings == "error-message-missing-first-name") {
+                $("#error-message-missing-first-name").css({ "display": "" });
+            } else if (settings == "error-message-missing-last-name") {
+                $("#error-message-missing-last-name").css({ "display": "" });
+            } else if (settings == "error-message-password-not-match") {
+                $("#error-message-password-not-match").css({ "display": "" });
+            }
+        })
+    </script>
+} 

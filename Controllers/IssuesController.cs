@@ -191,7 +191,7 @@ namespace BugTracker.Controllers
                 */
             }
 
-            return View(issue);
+            return PartialView("~/Views/Issues/_CreateIssuePartial.cshtml", issue);
         }
 
         // GET: Issues/Edit/5
