@@ -34,7 +34,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: Issues/Details/5
-        public async Task<IActionResult> Details(int? id, int commentsPageNumber)
+        public async Task<IActionResult> Details(int? id)
         {
 
             int pageSize = 5;
@@ -76,7 +76,7 @@ namespace BugTracker.Controllers
                 projectTaskID = issue.ProjectTaskID,
                 projectTaskName = projectTaskName,
                 issue = issue,
-                issueComments = new PaginatedList<IssueComment>(issue.IssueComments, commentsPageNumber, pageSize),
+                issueComments = issueComments,
                 issueComment = new IssueComment()
             };
 
@@ -247,7 +247,33 @@ namespace BugTracker.Controllers
             return View(issue);
         }
 
+        // GET: Issues/Close
+        public async Task<IActionResult> Close(int id, string type)
+        {
+            // Get the issue selected
+            var issue = await _context
+                .Issues
+                .FirstOrDefaultAsync(i => i.ID == id);
+
+            // Handle case where HTTP is GET and the controller needs to return the partial view
+            if (type == "get")
+            {
+                return PartialView("~/Views/Issues/_CloseIssuePartial.cshtml", issue);
+            }
+
+            // Otherwise, the HTTP is POST and the controller needs to update the issue
+            issue.Status = "Closed";
+            if (ModelState.IsValid)
+            {
+                _context.Update(issue);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Details", "Issues", new { id = id });
+        }
+
         // POST: Issues/Close/5
+        [HttpPost]
         public async Task<IActionResult> Close(int id)
         {
             var issue = await _context.Issues

@@ -1,0 +1,20 @@
+﻿@model BugTracker.Models.Issue
+
+<div class="modal fade" id="close-issue">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal header -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="close-issue-confirmation-header">Are you sure you want to close this ticket?</h4>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>x</span>
+                </button>
+            </div>
+
+            <!-- Modal body to close ticket -->
+            <div class="modal-body">
+                <input type="button" class="btn btn-danger justify-content-center" style="width: 150px;" value="Close Ticket?" onclick="location.href='@Url.Action("Close", "Issues", new {id = Model.ID})'" />
+            </div>
+        </div>
+    </div>
+</div>

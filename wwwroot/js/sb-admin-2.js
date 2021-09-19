@@ -98,3 +98,16 @@ $(document).ready(function () {
 
     });
 });
+
+// jQuery to close ticket
+$(document).ready(function () {
+    var closeTicketEntryPoint = $("div#close-ticket-modal-entry");
+    $("input#open-close-issue-modal").click(function (event) {
+        var url = $(this).data("url");
+        $.get(url).done(function (data) {
+            console.log(data);
+            closeTicketEntryPoint.html(data);
+            closeTicketEntryPoint.find(".modal").modal("show");
+        });
+    });
+});

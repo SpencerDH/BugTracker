@@ -20,6 +20,7 @@
 
 <!-- Testing modal window -->
 <div id="PageWithModal"></div>
+<div id="close-ticket-modal-entry"></div>
 
 <!-- Header for page -->
 <h1 style="text-align:center">@Model.issue.Name</h1>
@@ -109,7 +110,8 @@
         <div class="col text-center">
             @if (issueStatus == "Open")
             {
-                <input type="button" class="btn btn-danger justify-content-center" style="width: 150px;" value="Close Ticket?" onclick="location.href='@Url.Action("Close", "Issues", new {id = IssueID})'" />
+                <button class="btn btn-danger justify-content-center" style="width: 150px;" data-toggle="ajax-modal" data-target="#close-issue"
+                        data-url="@Url.Action("Close", "Issues", new {id = Model.issue.ID, type = "get"})">Close Ticket</button>
             }
         </div>
     </div>

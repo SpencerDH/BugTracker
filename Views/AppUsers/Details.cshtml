@@ -31,7 +31,12 @@
 
 <h1 class="user-page-header">@Model.currentUserName</h1>
 
+<br />
+<br />
+<br />
+
 <!-- Begin table of assigned issues -->
+<h3 style="text-align: center;">Tickets Assigned To @Model.currentUserName</h3>
 <table class="table" id="user-issues-table">
     <thead>
         <tr>
@@ -54,6 +59,7 @@
 <br />
 
 <!-- Begin table of user's comments on issues -->
+<h3 style="text-align: center;">@Model.currentUserName's Comments On Tickets</h3>
 <table class="table" id="user-comments-table">
     <thead>
         <tr>
