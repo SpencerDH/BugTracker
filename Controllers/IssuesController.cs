@@ -376,6 +376,28 @@ namespace BugTracker.Controllers
             return Json(new { msg = "success" });
         }
 
+        public async Task<IActionResult> RemoveUserFromIssue(int userID, int issueID)
+        {
+            // Get user by ID
+            var user = await _context.AppUsers
+                .Include(au => au.UserIssues)
+                .FirstOrDefaultAsync(au => au.Id == userID);
+
+            // Get the current issue (for returning the view)
+            var issue = await _context.Issues.FirstOrDefaultAsync(i => i.ID == issueID);
+
+            // Get the UserIssue object to remove
+            var userIssueToRemove = user.UserIssues.FirstOrDefault(ui => ui.IssueID == issueID);
+
+            // Remove the UserIssue object
+            user.UserIssues.Remove(userIssueToRemove);
+
+            // Save changes and return view
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", "Issues", new { id = issueID });
+        }
+
         private bool IssueExists(int id)
         {
             return _context.Issues.Any(e => e.ID == id);
