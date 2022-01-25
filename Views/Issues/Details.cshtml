@@ -103,10 +103,18 @@
             <br />
             <!-- Button to assign user to ticket -->
             <div class="col text-center">
-                <button class="btn btn-primary" data-toggle="ajax-modal" data-target="#assignUserToIssue"
-                        data-url="@Url.Action("AssignUserToIssue", "Issues", new { IssueID = Model.issue.ID })">Assign User to Ticket</button>
+                @if (issueStatus == "Open")
+                {
+                    <button class="btn btn-primary" data-toggle="ajax-modal" data-target="#assignUserToIssue"
+                            data-url="@Url.Action("AssignUserToIssue", "Issues", new { IssueID = Model.issue.ID })">
+                        Assign User to Ticket
+                    </button>
+                }
+                else
+                {
+                    <button class="btn btn-secondary">Users Cannot Be Assigned</button>
+                }
             </div>
-            
         </div>
     </div>
     <div class="row">

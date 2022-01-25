@@ -17,6 +17,8 @@
     <a href="@Url.Action("Create", "ProjectTasks", new { projectid = Model.ID })">Create New Task</a>
 </div>
 
+<div id="pageEntryPoint"></div>
+
 @foreach (var item in Model.ProjectTasks)
 {
     <br />
@@ -70,7 +72,7 @@
         <div class="card-footer">
             <p class="text-center">
                 <a asp-controller="ProjectTasks" asp-action="Edit" asp-route-id="@item.ID">Edit Task</a> |
-                <a asp-controller="ProjectTasks" asp-action="Delete" asp-route-id="@item.ID">Delete Task</a>
+                <a href="#" id="deleteTask" data-toggle="ajax-modal" data-target="#deleteTask" data-url="@Url.Action("Delete", "ProjectTasks", new { id = item.ID })">Delete Task</a>
             </p>
         </div>
     </div>

@@ -69,6 +69,18 @@ $(function () {
     });
 });
 
+// jQuery function to delete tasks
+$(function () {
+    var pageEntryPoint = $("#pageEntryPoint");
+    $("a#deleteTask").click(function (event) {
+        var url = $(this).data("url");
+        $.get(url).done(function (data) {
+            pageEntryPoint.html(data);
+            pageEntryPoint.find(".modal").modal("show");
+        });
+    });
+});
+
 // jQuery to pass user-to-issue assignment ViewModel to issues controller
 $(document).ready(function () {
     $("div#PageWithModal").on("click", "button#user-to-issue-assignment-button", function () {

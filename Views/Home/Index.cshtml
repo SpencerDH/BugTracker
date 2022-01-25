@@ -2,6 +2,8 @@
     ViewData["Title"] = "Home Page";
 }
 
+@model BugTracker.ViewModels.DashboardViewModel
+
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item active" aria-current="page">Home</li>
@@ -16,7 +18,7 @@
             <h5 class="card-header">Scrum Update</h5>
             <div class="card-body">
                 <p class="card-text">Sprint #4 completed; customer review in progress.</p>
-                <p class="card-text text-success">July 17th, 2021</p>
+                <p class="card-text text-success">December 8th, 2021</p>
             </div>
         </div>
     </div>
@@ -25,8 +27,8 @@
         <div class="card">
             <h5 class="card-header">Scrum Update</h5>
             <div class="card-body">
-                <p class="card-text">Sprint #4 completed; customer review in progress.</p>
-                <p class="card-text text-success">July 17th, 2021</p>
+                <p class="card-text">Sprint #5 begun; tasks assigned.</p>
+                <p class="card-text text-success">January 8th, 2022</p>
             </div>
         </div>
     </div>
@@ -35,18 +37,18 @@
         <div class="card">
             <h5 class="card-header">Scrum Update</h5>
             <div class="card-body">
-                <p class="card-text">Sprint #4 completed; customer review in progress.</p>
-                <p class="card-text text-success">July 17th, 2021</p>
+                <p class="card-text">Sprint #5 midway point.</p>
+                <p class="card-text text-success">January 19th, 2022</p>
             </div>
         </div>
     </div>
 
     <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
-        <div class="card">
-            <h5 class="card-header">Scrum Update</h5>
+        <div class="card text-white bg-primary">
+            <h5 class="card-header bg-primary">Scrum Update</h5>
             <div class="card-body">
-                <p class="card-text">Sprint #4 completed; customer review in progress.</p>
-                <p class="card-text text-success">July 17th, 2021</p>
+                <p class="card-text">Sprint #5 extension approved.</p>
+                <p class="card-text text-success">January 25th, 2022</p>
             </div>
         </div>
     </div>
@@ -57,30 +59,32 @@
     <div class="row">
         <!-- Column for table -->
         <div class="col-6">
+            <h4 style="text-align: center;">Recently Viewed Tickets</h4>
             <table id="dummyTable">
                 <thead>
                     <tr>
-                        <th>Sprint</th>
                         <th>Ticket</th>
-                        <th>Date</th>
+                        <th>Viewed</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>#2</td>
-                        <td>Fix git branch reference</td>
-                        <td>11/30/2021</td>
-                    </tr>
-                    <tr>
-                        <td>#3</td>
-                        <td>Undefined error handling in login page</td>
-                        <td>9/11/2021</td>
-                    </tr>
-                    <tr>
-                        <td>#2</td>
-                        <td>Technical report review</td>
-                        <td>9/18/2021</td>
-                    </tr>
+                    @if (Model.RecentlyViewedIssues == null)
+                    {
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var item in Model.RecentlyViewedIssues)
+                        {
+                            <tr>
+                                <td><a asp-controller="Issues" asp-action="Details" asp-route-id="@item.Issue.ID">@item.Issue.Name</a></td>
+                                <td>@item.TimeViewed</td>
+                            </tr>
+                        }
+                    }
                 </tbody>
             </table>
         </div>
@@ -94,7 +98,10 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            $("#dummyTable").DataTable();
+            $("#dummyTable").DataTable({
+                order: [[1, "asc"]],
+                lengthMenu: [5, 10, 15]
+            });
         })
     </script>
 

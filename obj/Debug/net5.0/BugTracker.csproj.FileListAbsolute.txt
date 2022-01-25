@@ -221,3 +221,5 @@ C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\Issues\UserIssuesI
 C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\Issues\_AssignUserToIssuePartial.cshtml.g.cs
 C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\Account\_SignInErrorPartial.cshtml.g.cs
 C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\Issues\_CloseIssuePartial.cshtml.g.cs
+C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\ProjectTasks\_DeleteTaskPartial.cshtml.g.cs
+C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\Account\AccessDenied.cshtml.g.cs

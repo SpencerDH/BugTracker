@@ -36,25 +36,32 @@ namespace BugTracker.Controllers
         }
 
         // GET: AppUsers/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, string userName = "")
         {
-            /*
-            // Select the user based on the id with userManager; return an error if user doesn't exist
-            var user = await _context.AppUsers
-                .Include(au => au.UserIssues)
-                    .ThenInclude(ui => ui.Issue)
-                .Include(au => au.IssueComments)
-                    .ThenInclude(ic => ic.Issue)
-                .FirstOrDefaultAsync(u => u.Id == id);
-            */
+            // Initialize currentUser variable
+            AppUser currentUser;
+            int currentUserId;
 
-            // Get user's username and confirm that user exists
-            var currentUser = await _context.AppUsers
-                .FirstOrDefaultAsync(au => au.Id == id);
+            // Get current user variable based on whether an ID or a username is passed in to the controller
+            if (id == null && userName != "")
+            {
+                currentUser = await _context.AppUsers
+                    .FirstOrDefaultAsync(au => au.UserName == userName);
 
+                currentUserId = currentUser.Id;
+            }
+            else
+            {
+                currentUser = await _context.AppUsers
+                    .FirstOrDefaultAsync(au => au.Id == id);
+
+                currentUserId = (int)id;
+            }
+
+            // Check to make sure user exists
             if (currentUser == null)
             {
-                ViewBag.ErrorMessage = $"User with Id = {id} cannot be found";
+                ViewBag.ErrorMessage = $"User with Id = {currentUserId} cannot be found";
                 return View("NotFound");
             }
 
@@ -64,7 +71,7 @@ namespace BugTracker.Controllers
             var userIssues = await _context.AppUsers
                 .Include(au => au.UserIssues)
                     .ThenInclude(ui => ui.Issue)
-                .FirstOrDefaultAsync(u => u.Id == id);
+                .FirstOrDefaultAsync(u => u.Id == currentUserId);
 
             var assignedIssues = from ui in userIssues.UserIssues
                                  select ui.Issue;

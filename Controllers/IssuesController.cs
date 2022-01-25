@@ -36,14 +36,13 @@ namespace BugTracker.Controllers
         // GET: Issues/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-
-            int pageSize = 5;
-
+            // Handle case where the ID leads to a null issue
             if (id == null)
             {
                 return NotFound();
             }
 
+            // Select issue from database
             var issue = await _context.Issues
                 .Include(i => i.ProjectTask)
                 .Include(i => i.UserIssues)
@@ -54,6 +53,32 @@ namespace BugTracker.Controllers
                         // .Where(au != null)
                 .FirstOrDefaultAsync(m => m.ID == id);
 
+            // Get current user and add this issue to their list of recently viewed issues
+            var currentUserID = Convert.ToInt32(_userManager.GetUserId(User));
+            var currentUser = await _context.AppUsers
+                .Include(au => au.RecentlyViewedIssues)
+                .FirstOrDefaultAsync(au => au.Id == currentUserID);
+
+            AppUserViewedIssue viewedIssue = new AppUserViewedIssue
+            {
+                Issue = issue,
+                AppUser = currentUser
+            };
+
+            var duplicateViewedIssues = from rvi in currentUser.RecentlyViewedIssues
+                                       where rvi.Issue == issue
+                                       select rvi;
+
+            foreach (var duplicateViewedIssue in duplicateViewedIssues)
+            {
+                currentUser.RecentlyViewedIssues.Remove(duplicateViewedIssue);
+            }
+
+            currentUser.RecentlyViewedIssues.Add(viewedIssue);
+
+            await _context.SaveChangesAsync();
+
+            // Handle case where issue is closed
             if (issue.Status == "Closed")
             {
                 //

@@ -145,30 +145,23 @@ namespace BugTracker.Controllers
         // GET: ProjectTasks/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var projectTask = await _context.ProjectTasks
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (projectTask == null)
-            {
-                return NotFound();
-            }
-
-            return View(projectTask);
+            ViewBag.projecttaskid = id;
+            return PartialView("~/Views/ProjectTasks/_DeleteTaskPartial.cshtml");
         }
 
-        // POST: ProjectTasks/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        // POST: ProjectTasks/DeleteConfirmed/5
+        // [HttpPost]
+        // [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var projectTask = await _context.ProjectTasks.FindAsync(id);
+            var projectTask = await _context.ProjectTasks
+                .FirstOrDefaultAsync(p => p.ID == id);
+
+            var projectID = projectTask.ProjectID;
+
             _context.ProjectTasks.Remove(projectTask);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", "Projects", new { id = projectID });
         }
 
         private bool ProjectTaskExists(int id)

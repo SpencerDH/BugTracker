@@ -81,7 +81,7 @@
                             @issue.TimeCreated
                         </td>
                         <td>
-                            @issue.UserCreated
+                            <a asp-controller="AppUsers" asp-action="Details" asp-route-id="" asp-route-userName="@issue.UserCreated">@issue.UserCreated</a>
                         </td>
                     </tr>
                 }
