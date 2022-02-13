@@ -4,7 +4,6 @@ C:\Users\spenc\WebDev\BugTracker\bin\Debug\net5.0\BugTracker.runtimeconfig.dev.j
 C:\Users\spenc\WebDev\BugTracker\bin\Debug\net5.0\BugTracker.dll
 C:\Users\spenc\WebDev\BugTracker\bin\Debug\net5.0\ref\BugTracker.dll
 C:\Users\spenc\WebDev\BugTracker\bin\Debug\net5.0\BugTracker.pdb
-C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\BugTracker.csprojAssemblyReference.cache
 C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\BugTracker.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\BugTracker.AssemblyInfoInputs.cache
 C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\BugTracker.AssemblyInfo.cs
@@ -223,3 +222,6 @@ C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\Account\_SignInErr
 C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\Issues\_CloseIssuePartial.cshtml.g.cs
 C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\ProjectTasks\_DeleteTaskPartial.cshtml.g.cs
 C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\Razor\Views\Account\AccessDenied.cshtml.g.cs
+C:\Users\spenc\WebDev\BugTracker\bin\Debug\net5.0\Castle.Core.dll
+C:\Users\spenc\WebDev\BugTracker\bin\Debug\net5.0\Moq.dll
+C:\Users\spenc\WebDev\BugTracker\obj\Debug\net5.0\BugTracker.csproj.AssemblyReference.cache
